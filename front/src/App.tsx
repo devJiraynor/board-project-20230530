@@ -16,6 +16,7 @@ import BoardListItem from './components/BoardListItem';
 import Top3ListItem from './components/Top3ListItem';
 import CommentListItem from './components/CommentListItem';
 import InputBox from './components/InputBox';
+import { INPUT_ICON } from './constants';
 
 //! 메인화면         - path: '/' / component : <Main />
 //! 로그인 / 회원가입 - path: '/auth' / component : <Authentication />
@@ -28,7 +29,7 @@ import InputBox from './components/InputBox';
 function App() {
   return (
     <>
-      <InputBox label='주소 *' type='text' placeholder='우편번호 찾기' helper='우편번호를 선택해주세요.' />
+      <InputBox label='주소 *' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} />
       <Header />
       <Routes>
         <Route path='/' element={<Main />} />
