@@ -20,11 +20,17 @@ export default function Header() {
   }
 
   const onSignInButtonClickHandler = () => {
+    setLogin(true);
     navigator('/auth');
   }
 
   const onMyPageButtonClickHandler = () => {
     navigator('/my-page');
+  }
+
+  const onSignOutButtonClickHandler = () => {
+    setLogin(false);
+    navigator('/');
   }
 
   return (
@@ -47,7 +53,7 @@ export default function Header() {
             </div>
         ))}
         {!isAuth && (
-          isMyPage ? (<div className='header-white-button'>로그아웃</div>) :
+          isMyPage ? (<div className='header-white-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>) :
           showUpload ? (<div className='header-black-disable-button'>업로드</div>) :
           login ? (<div className='header-white-button' onClick={onMyPageButtonClickHandler}>마이페이지</div>) :
                   (<div className='header-black-button' onClick={onSignInButtonClickHandler}>로그인</div>)
