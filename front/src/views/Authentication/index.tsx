@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 import InputBox from 'src/components/InputBox';
-import { INPUT_ICON } from 'src/constants';
+import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
 import { signInMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,7 +61,7 @@ export default function Authentication() {
   }
 
   const SignUpCard = () => {
-    const [page, setPage] = useState<1 | 2>(1);
+    const [page, setPage] = useState<1 | 2>(2);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordCheck, setShowPassowrdCheck] = useState<boolean>(false);
 
@@ -92,25 +92,34 @@ export default function Authentication() {
     }
 
     const onButtonClickHandler = () => {
-      if (page === 1) {
-        setPasswordError(password.length < 8);
-        setPasswordCheckError(password !== passwordCheck);
-        if (!passwordError && !passwordCheckError) setPage(2);
-      } else {
-        if (!nickname) {
-          setNicknameError(true);
-          return;
-        }
-        if (!address) {
-          setAddressError(true);
-          return;
-        }
-        setView('sign-in');
-      }
+      if (page === 1) checkPage1();
+      if (page === 2) checkPage2();
     }
 
     const onSignInClickHandler = () => {
       setView('sign-in');
+    }
+
+    const checkPage1 = () => {
+      const emailPatternFlag = !emailPattern.test(email);
+      const passwordFlag = password.length < 8;
+      const passwordCheckFlag = password !== passwordCheck;
+
+      setEmailPatternError(emailPatternFlag);
+      setPasswordError(passwordFlag);
+      setPasswordCheckError(passwordCheckFlag);
+
+      if (!emailPatternFlag && !passwordFlag && !passwordCheckFlag) setPage(2);
+    }
+
+    const checkPage2 = () => {
+      const telNumberFlag = !telNumberPattern.test(telNumber);
+
+      setTelNumberError(telNumberFlag);
+      setNicknameError(!nickname);
+      setAddressError(!address);
+
+      if (!telNumberFlag && nickname && address) setView('sign-in');
     }
 
     return (
