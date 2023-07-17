@@ -4,6 +4,7 @@ import InputBox from 'src/components/InputBox';
 import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
 import { signInMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
+import { useDaumPostcodePopup, Address } from 'react-daum-postcode';
 
 export default function Authentication() {
 
@@ -61,6 +62,9 @@ export default function Authentication() {
   }
 
   const SignUpCard = () => {
+
+    const open = useDaumPostcodePopup();
+
     const [page, setPage] = useState<1 | 2>(2);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordCheck, setShowPassowrdCheck] = useState<boolean>(false);
@@ -89,6 +93,15 @@ export default function Authentication() {
 
     const onPasswordCheckIconClickHandler = () => {
       setShowPassowrdCheck(!showPasswordCheck);
+    }
+
+    const onAddressIconClickHandler = () => {
+      open({ onComplete });
+    }
+
+    const onComplete = (data: Address) => {
+      const address = data.address;
+      setAddress(address);
     }
 
     const onButtonClickHandler = () => {
@@ -140,7 +153,7 @@ export default function Authentication() {
               <>
                 <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError} helper={nicknameError ? '닉네임을 입력해주세요.' : ''} value={nickname} setValue={setNickname} />
                 <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError} helper={telNumberError ? '숫자만 입력해주세요.' : ''} value={telNumber} setValue={setTelNumber} />
-                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={addressError ? '우편번호를 선택해주세요.' : ''} value={address} setValue={setAddress} />
+                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={addressError ? '우편번호를 선택해주세요.' : ''} value={address} setValue={setAddress} buttonHandler={onAddressIconClickHandler} />
                 <InputBox label='상세 주소*' type='text' placeholder='상세 주소를 입력해주세요.' value={addressDetail} setValue={setAddressDetail} />
               </>
             )}
