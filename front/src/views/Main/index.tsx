@@ -5,6 +5,7 @@ import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/resp
 import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
+import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
 
 export default function Main() {
 
@@ -39,20 +40,55 @@ export default function Main() {
     const [popularList, setPopularList] = useState<string[]>([]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentSection, setCurrentSection] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number[]>([]);
+    const [totalSection, setTotalSection] = useState<number>(1);
 
     const onPopularClickHandler = (word: string) => {
       navigator(`/search/${word}`);
     }
 
+    const onPageClickHandler = (page: number) => {
+      setCurrentPage(page);
+    }
+
+    const onPreviousClickHandler = () => {
+      // 한 페이지씩 이동
+      // if (currentPage != 1) setCurrentPage(currentPage - 1);
+
+      // 섹션 이동
+      if (currentSection != 1) setCurrentSection(currentSection - 1);
+    }
+
+    const onNextClickHanlder = () => {
+      // 한 페이지씩 이동
+      // if (currentPage != totalPage.length) setCurrentPage(currentPage + 1);
+
+      // 섹션 이동
+      if (currentSection != totalSection) setCurrentSection(currentSection + 1);
+    }
+
     useEffect(() => {
+
+      const boardCount = 10;
+
+      const section = Math.ceil(boardCount / COUNT_BY_SECTION);
+      const totalPageCount = Math.ceil(boardCount / COUNT_BY_PAGE);
+
+      const maxPage = totalPageCount >= currentSection * PAGE_BY_SECTION ? 
+        currentSection * PAGE_BY_SECTION : totalPageCount;
+      const minPage = 10 * (currentSection - 1) + 1;
+
+      setTotalSection(section);
+      
+
       if (!currentList.length) setCurrentList(currentBoardListMock);
-      if (!totalPage.length) {
-        const pageList = [];
-        for (let page = 1; page <= 10; page++) pageList.push(page);
-        setTotalPage(pageList);
-      }
-    }, []);
+      
+      const pageList = [];
+      for (let page = minPage; page <= maxPage; page++) pageList.push(page);
+      setTotalPage(pageList);
+
+    }, [currentSection]);
 
     useEffect(() => {
       if (!popularList.length) setPopularList(popularWordListMock);
@@ -75,9 +111,17 @@ export default function Main() {
           </div>
         </div>
         <div className='main-bottom-pagination'>
-          <div className='pagination-left'>{'< 이전'}</div>
-          {totalPage.map((page) => (<div className='pagination-page'>{page}</div>))}
-          <div className='pagination-right'>{'다음 >'}</div>
+          <div className='pagination-button' onClick={onPreviousClickHandler}>
+            <div className='pagination-left-icon'></div>
+            <div className='pagination-button-text'>이전</div>
+          </div>
+          <div className='pagination-text'>{'\|'}</div>
+          {totalPage.map((page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={() => onPageClickHandler(page)}>{page}</div>))}
+          <div className='pagination-text'>{'\|'}</div>
+          <div className='pagination-button' onClick={onNextClickHanlder}>
+            <div className='pagination-button-text'>다음</div>
+            <div className='pagination-right-icon'></div>
+          </div>
         </div>
       </div>
     )
