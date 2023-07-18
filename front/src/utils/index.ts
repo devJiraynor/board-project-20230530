@@ -8,5 +8,5 @@ export const getPagination = (boardCount: number, currentSection:number) => {
     currentSection * PAGE_BY_SECTION : totalPageCount;
   const minPage = 10 * (currentSection - 1) + 1;
 
-  return { section, maxPage, minPage };
+  return { section, maxPage, minPage, totalPageCount };
 }

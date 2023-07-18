@@ -6,6 +6,7 @@ import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/moc
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
 import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
+import { getPagination } from 'src/utils';
 
 export default function Main() {
 
@@ -44,6 +45,10 @@ export default function Main() {
     const [totalPage, setTotalPage] = useState<number[]>([]);
     const [totalSection, setTotalSection] = useState<number>(1);
 
+    const [totalPageCount, setTotalPageCount] = useState<number>(0);
+    const [minPage, setMinPage] = useState<number>(0);
+    const [maxPage, setMaxPage] = useState<number>(0);
+
     const onPopularClickHandler = (word: string) => {
       navigator(`/search/${word}`);
     }
@@ -57,7 +62,12 @@ export default function Main() {
       // if (currentPage != 1) setCurrentPage(currentPage - 1);
 
       // 섹션 이동
-      if (currentSection != 1) setCurrentSection(currentSection - 1);
+      // if (currentSection != 1) setCurrentSection(currentSection - 1);
+
+      // 한 페이지씩 이동 + 섹션 이동
+      if (currentPage == 1) return;
+      if (currentPage == minPage) setCurrentSection(currentSection - 1);
+      setCurrentPage(currentPage - 1);
     }
 
     const onNextClickHanlder = () => {
@@ -65,22 +75,22 @@ export default function Main() {
       // if (currentPage != totalPage.length) setCurrentPage(currentPage + 1);
 
       // 섹션 이동
-      if (currentSection != totalSection) setCurrentSection(currentSection + 1);
+      // if (currentSection != totalSection) setCurrentSection(currentSection + 1);
+      
+      // 한 페이지씩 이동 + 섹션 이동
+      if (currentPage == totalPageCount) return;
+      if (currentPage == maxPage) setCurrentSection(currentSection + 1);
+      setCurrentPage(currentPage + 1);
     }
 
     useEffect(() => {
+      const boardCount = 72;
 
-      const boardCount = 10;
-
-      const section = Math.ceil(boardCount / COUNT_BY_SECTION);
-      const totalPageCount = Math.ceil(boardCount / COUNT_BY_PAGE);
-
-      const maxPage = totalPageCount >= currentSection * PAGE_BY_SECTION ? 
-        currentSection * PAGE_BY_SECTION : totalPageCount;
-      const minPage = 10 * (currentSection - 1) + 1;
-
+      const { section, minPage, maxPage, totalPageCount } = getPagination(boardCount, currentSection);
       setTotalSection(section);
-      
+      setMinPage(minPage);
+      setMaxPage(maxPage);
+      setTotalPageCount(totalPageCount);
 
       if (!currentList.length) setCurrentList(currentBoardListMock);
       
