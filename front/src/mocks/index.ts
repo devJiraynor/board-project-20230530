@@ -75,7 +75,7 @@ export const currentBoardListMock = [
   }
 ];
 
-export const popularWordList = ['안녕', '반가워', '아침', '점심', '저녁', '퇴근하고싶다.'];
+export const popularWordListMock = ['안녕', '반가워', '아침', '점심', '저녁', '퇴근하고싶다.'];
 
 export const top3ListItemMock = {
   writerProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
