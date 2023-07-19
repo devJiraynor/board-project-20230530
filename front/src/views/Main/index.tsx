@@ -7,6 +7,7 @@ import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
 import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
 import { getPagination } from 'src/utils';
+import Pagination from 'src/components/Pagination';
 
 export default function Main() {
 
@@ -84,19 +85,21 @@ export default function Main() {
     }
 
     useEffect(() => {
-      const boardCount = 72;
 
+      const boardCount = 72;
       const { section, minPage, maxPage, totalPageCount } = getPagination(boardCount, currentSection);
-      setTotalSection(section);
+      
       setMinPage(minPage);
       setMaxPage(maxPage);
+      setTotalSection(section);
       setTotalPageCount(totalPageCount);
-
-      if (!currentList.length) setCurrentList(currentBoardListMock);
       
       const pageList = [];
       for (let page = minPage; page <= maxPage; page++) pageList.push(page);
       setTotalPage(pageList);
+
+      if (!currentList.length) setCurrentList(currentBoardListMock);
+      
 
     }, [currentSection]);
 
@@ -120,19 +123,13 @@ export default function Main() {
             </div>
           </div>
         </div>
-        <div className='main-bottom-pagination'>
-          <div className='pagination-button' onClick={onPreviousClickHandler}>
-            <div className='pagination-left-icon'></div>
-            <div className='pagination-button-text'>이전</div>
-          </div>
-          <div className='pagination-text'>{'\|'}</div>
-          {totalPage.map((page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={() => onPageClickHandler(page)}>{page}</div>))}
-          <div className='pagination-text'>{'\|'}</div>
-          <div className='pagination-button' onClick={onNextClickHanlder}>
-            <div className='pagination-button-text'>다음</div>
-            <div className='pagination-right-icon'></div>
-          </div>
-        </div>
+        <Pagination 
+          totalPage={totalPage} 
+          currentPage={currentPage} 
+          onPageClickHandler={onPageClickHandler} 
+          onNextClickHandler={onNextClickHanlder} 
+          onPreviousClickHandler={onPreviousClickHandler} 
+        />
       </div>
     )
   }

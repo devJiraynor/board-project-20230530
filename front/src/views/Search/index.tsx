@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { relationWordListMock, searchBoardListMock } from 'src/mocks';
 import { SearchListResponseDto } from 'src/interfaces/response';
 import { COUNT_BY_PAGE } from 'src/constants';
+import { getPagination } from 'src/utils';
+import Pagination from 'src/components/Pagination';
 
 export default function Search() {
 
@@ -13,7 +15,16 @@ export default function Search() {
   const { searchWord } = useParams();
 
   const [boardCount, setBoardCount] = useState<number>(0);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentSection, setCurrentSection] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number[]>([]);
+  const [totalSection, setTotalSection] = useState<number>(1);
+
+  const [maxPage, setMaxPage] = useState<number>(0);
+  const [minPage, setMinPage] = useState<number>(0);
+  const [totalPageCount, setTotalPageCount] = useState<number>(0);
+
   const [searchList, setSearchList] = useState<SearchListResponseDto[]>([]);
   const [pageBoardList, setPageBoardList] = useState<SearchListResponseDto[]>([]);
 
@@ -23,11 +34,19 @@ export default function Search() {
     navigator(`/search/${word}`);
   }
 
+  const onPageClickHandler = (page: number) => {
+    setCurrentPage(page);
+  }
+
   const onPreviousClickHandler = () => {
+    if (currentPage === 1) return;
+    if (currentPage === minPage) setCurrentSection(currentSection - 1);
     setCurrentPage(currentPage - 1);
   }
 
   const onNextClickHandler = () => {
+    if (currentPage === totalPageCount) return;
+    if (currentPage === maxPage) setCurrentSection(currentSection + 1);
     setCurrentPage(currentPage + 1);
   }
 
@@ -47,6 +66,19 @@ export default function Search() {
     setRelationList(relationWordListMock);
 
     getPageBoardList();
+
+    const boardCount = searchBoardListMock.length;
+    const { section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
+
+    setMaxPage(maxPage);
+    setMinPage(minPage);
+    setTotalSection(section);
+    setTotalPageCount(totalPageCount);
+
+    const pageList = [];
+    for (let page = minPage; page <= maxPage; page++) pageList.push(page);
+    setTotalPage(pageList);
+
   }, [searchWord]);
 
   useEffect(() => {
@@ -73,19 +105,13 @@ export default function Search() {
           </div>
         </div>
       </div>
-      <div className='search-pagination'>
-        <div className='pagination-button' onClick={onPreviousClickHandler}>
-          <div className='pagination-left-icon'></div>
-          <div className='pagination-button-text'>이전</div>
-        </div>
-        <div className='pagination-text'></div>
-        <div></div>
-        <div className='pagination-text'></div>
-        <div className='pagination-button' onClick={onNextClickHandler}>
-          <div className='pagination-button-text'>다음</div>
-          <div className='pagination-right-icon'></div>
-        </div>
-      </div>
+      <Pagination 
+        totalPage={totalPage} 
+        currentPage={currentPage} 
+        onPageClickHandler={onPageClickHandler} 
+        onNextClickHandler={onNextClickHandler} 
+        onPreviousClickHandler={onPreviousClickHandler} 
+      />
     </div>
   )
 }
