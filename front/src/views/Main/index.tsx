@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
 import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
 
 export default function Main() {
 
@@ -41,66 +42,15 @@ export default function Main() {
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
     const [popularList, setPopularList] = useState<string[]>([]);
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
-    const [totalPage, setTotalPage] = useState<number[]>([]);
-    const [totalSection, setTotalSection] = useState<number>(1);
-
-    const [totalPageCount, setTotalPageCount] = useState<number>(0);
-    const [minPage, setMinPage] = useState<number>(0);
-    const [maxPage, setMaxPage] = useState<number>(0);
+    const { totalPage, currentPage, currentSection } = usePagination();
+    const { onPageClickHandler, onNextClickHanlder, onPreviousClickHandler } = usePagination();
 
     const onPopularClickHandler = (word: string) => {
       navigator(`/search/${word}`);
     }
 
-    const onPageClickHandler = (page: number) => {
-      setCurrentPage(page);
-    }
-
-    const onPreviousClickHandler = () => {
-      // 한 페이지씩 이동
-      // if (currentPage != 1) setCurrentPage(currentPage - 1);
-
-      // 섹션 이동
-      // if (currentSection != 1) setCurrentSection(currentSection - 1);
-
-      // 한 페이지씩 이동 + 섹션 이동
-      if (currentPage == 1) return;
-      if (currentPage == minPage) setCurrentSection(currentSection - 1);
-      setCurrentPage(currentPage - 1);
-    }
-
-    const onNextClickHanlder = () => {
-      // 한 페이지씩 이동
-      // if (currentPage != totalPage.length) setCurrentPage(currentPage + 1);
-
-      // 섹션 이동
-      // if (currentSection != totalSection) setCurrentSection(currentSection + 1);
-      
-      // 한 페이지씩 이동 + 섹션 이동
-      if (currentPage == totalPageCount) return;
-      if (currentPage == maxPage) setCurrentSection(currentSection + 1);
-      setCurrentPage(currentPage + 1);
-    }
-
     useEffect(() => {
-
-      const boardCount = 72;
-      const { section, minPage, maxPage, totalPageCount } = getPagination(boardCount, currentSection);
-      
-      setMinPage(minPage);
-      setMaxPage(maxPage);
-      setTotalSection(section);
-      setTotalPageCount(totalPageCount);
-      
-      const pageList = [];
-      for (let page = minPage; page <= maxPage; page++) pageList.push(page);
-      setTotalPage(pageList);
-
       if (!currentList.length) setCurrentList(currentBoardListMock);
-      
-
     }, [currentSection]);
 
     useEffect(() => {
@@ -123,6 +73,7 @@ export default function Main() {
             </div>
           </div>
         </div>
+        {currentPage}
         <Pagination 
           totalPage={totalPage} 
           currentPage={currentPage} 

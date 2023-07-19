@@ -20,7 +20,6 @@ export default function Search() {
   const [currentSection, setCurrentSection] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number[]>([]);
   const [totalSection, setTotalSection] = useState<number>(1);
-
   const [maxPage, setMaxPage] = useState<number>(0);
   const [minPage, setMinPage] = useState<number>(0);
   const [totalPageCount, setTotalPageCount] = useState<number>(0);
