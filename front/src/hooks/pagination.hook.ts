@@ -29,7 +29,7 @@ const usePagination = () => {
     setCurrentPage(currentPage - 1);
   }
 
-  const onNextClickHanlder = () => {
+  const onNextClickHandler = () => {
     // 한 페이지씩 이동
     // if (currentPage != totalPage.length) setCurrentPage(currentPage + 1);
 
@@ -42,9 +42,7 @@ const usePagination = () => {
     setCurrentPage(currentPage + 1);
   }
 
-  useEffect(() => {
-
-    const boardCount = 72;
+  const changeSection = (boardCount: number) => {
     const { section, minPage, maxPage, totalPageCount } = getPagination(boardCount, currentSection);
     
     setMinPage(minPage);
@@ -55,10 +53,9 @@ const usePagination = () => {
     const pageList = [];
     for (let page = minPage; page <= maxPage; page++) pageList.push(page);
     setTotalPage(pageList);
+  }
 
-  }, [currentSection]);
-
-  return { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHanlder };
+  return { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection };
 
 }
 

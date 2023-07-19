@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { relationWordListMock, searchBoardListMock } from 'src/mocks';
 import { SearchListResponseDto } from 'src/interfaces/response';
 import { COUNT_BY_PAGE } from 'src/constants';
-import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
 
 export default function Search() {
 
@@ -16,37 +16,15 @@ export default function Search() {
 
   const [boardCount, setBoardCount] = useState<number>(0);
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [currentSection, setCurrentSection] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number[]>([]);
-  const [totalSection, setTotalSection] = useState<number>(1);
-  const [maxPage, setMaxPage] = useState<number>(0);
-  const [minPage, setMinPage] = useState<number>(0);
-  const [totalPageCount, setTotalPageCount] = useState<number>(0);
-
   const [searchList, setSearchList] = useState<SearchListResponseDto[]>([]);
   const [pageBoardList, setPageBoardList] = useState<SearchListResponseDto[]>([]);
 
   const [relationList, setRelationList] = useState<string[]>([]);
 
+  const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
+
   const onRelationClickHandler = (word: string) => {
     navigator(`/search/${word}`);
-  }
-
-  const onPageClickHandler = (page: number) => {
-    setCurrentPage(page);
-  }
-
-  const onPreviousClickHandler = () => {
-    if (currentPage === 1) return;
-    if (currentPage === minPage) setCurrentSection(currentSection - 1);
-    setCurrentPage(currentPage - 1);
-  }
-
-  const onNextClickHandler = () => {
-    if (currentPage === totalPageCount) return;
-    if (currentPage === maxPage) setCurrentSection(currentSection + 1);
-    setCurrentPage(currentPage + 1);
   }
 
   const getPageBoardList = () => {
@@ -66,19 +44,12 @@ export default function Search() {
 
     getPageBoardList();
 
-    const boardCount = searchBoardListMock.length;
-    const { section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
-
-    setMaxPage(maxPage);
-    setMinPage(minPage);
-    setTotalSection(section);
-    setTotalPageCount(totalPageCount);
-
-    const pageList = [];
-    for (let page = minPage; page <= maxPage; page++) pageList.push(page);
-    setTotalPage(pageList);
-
+    changeSection(searchBoardListMock.length);
   }, [searchWord]);
+
+  useEffect(() => {
+    changeSection(searchBoardListMock.length);
+  }, [currentSection]);
 
   useEffect(() => {
     getPageBoardList();

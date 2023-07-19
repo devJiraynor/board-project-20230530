@@ -5,23 +5,32 @@ import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/resp
 import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
-import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
-import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
 
+//          component          //
+// description: 메인 화면 컴포넌트 //
 export default function Main() {
 
+  //          function          //
+  // description: 페이지 이동을 위한 네비게이트 함수 //
   const navigator = useNavigate();
 
+  //          component          //
+  // description: 메인 화면의 상단 //
   const MainTop = () => {
-
+    
+    //          state          //
+    // description: 인기 게시물 리스트 상태 //
     const [top3List, setTop3List] = useState<Top3ListResponseDto[]>([]);
 
+    //          effect          //
+    // description: 첫 시작 시 인기 게시물 데이터 불러오기 //
     useEffect(() => {
       if (!top3List.length) setTop3List(top3ListMock);
     }, []);
 
+    //          render          //
     return (
       <div className='main-top'>
         <div className='main-top-text-container'>
@@ -42,14 +51,14 @@ export default function Main() {
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
     const [popularList, setPopularList] = useState<string[]>([]);
 
-    const { totalPage, currentPage, currentSection } = usePagination();
-    const { onPageClickHandler, onNextClickHanlder, onPreviousClickHandler } = usePagination();
+    const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
 
     const onPopularClickHandler = (word: string) => {
       navigator(`/search/${word}`);
     }
 
     useEffect(() => {
+      changeSection(72);
       if (!currentList.length) setCurrentList(currentBoardListMock);
     }, [currentSection]);
 
@@ -73,12 +82,11 @@ export default function Main() {
             </div>
           </div>
         </div>
-        {currentPage}
         <Pagination 
           totalPage={totalPage} 
           currentPage={currentPage} 
           onPageClickHandler={onPageClickHandler} 
-          onNextClickHandler={onNextClickHanlder} 
+          onNextClickHandler={onNextClickHandler} 
           onPreviousClickHandler={onPreviousClickHandler} 
         />
       </div>
