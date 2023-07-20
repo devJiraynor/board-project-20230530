@@ -1,6 +1,9 @@
 import { ChangeEvent, useRef, useState } from 'react'
 import './style.css';
 import DefaultProflie from './asset/my_page_profile_default.png';
+import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
+import { MyPageListResponseDto } from 'src/interfaces/response';
 
 //          component          //
 // description: 마이페이지 화면 //
@@ -22,6 +25,8 @@ export default function MyPage() {
     const [profileImageUrl, setProfileImageUrl] = useState<string>(DefaultProflie);
     // description: 사용자 닉네임 상태 //
     const [nickname, setNickname] = useState<string>('나는주코야키');
+    // description: 닉네임 변경 버튼 상태 //
+    const [nicknameChange, setNicknameChange] = useState<boolean>(false);
 
     //          function          //
 
@@ -37,6 +42,14 @@ export default function MyPage() {
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       setProfileImageUrl(imageUrl);
     }
+    // description: 닉네임 변경 이벤트 //
+    const onNicknameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setNickname(event.target.value);
+    }
+    // description: 닉네임 변경 버튼 클릭 이벤트 //
+    const onNicknameButtonClickHandler = () => {
+      setNicknameChange(!nicknameChange);
+    }
 
     //          effect          //
 
@@ -50,9 +63,12 @@ export default function MyPage() {
           </div>
           <div className='my-page-top-info-box'>
             <div className='my-page-info-nickname-container'>
-              <div className='my-page-info-nickname'>{nickname}</div>
-              <input type='text' value={nickname} />
-              <div className='my-page-info-nickname-button'>
+              {nicknameChange ? (
+                <input className='my-page-info-nickname-input' type='text' value={nickname} onChange={onNicknameChangeHandler} size={nickname.length} />
+              ) : (
+                <div className='my-page-info-nickname'>{nickname}</div>
+              )}
+              <div className='my-page-info-nickname-button' onClick={onNicknameButtonClickHandler}>
                 <div className='my-page-edit-icon'></div>
               </div>
             </div>
@@ -66,6 +82,12 @@ export default function MyPage() {
   // description: 마이페이지 하단 //
   const MyPageBottom = () => {
     //          state          //
+    // description: 전체 게시물 리스트 상태 //
+    const [myPageBoardList, setMyPageBoardList] = useState<MyPageListResponseDto[]>([]);
+    // description: 전체 게시물 갯수 상태 //
+    const [boardCount, setBoardCount] = useState<number>(0);
+    // description: 페이지네이션과 관련된 상태 및 함수 //
+    const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler } = usePagination();
 
     //          function          //
 
@@ -75,7 +97,27 @@ export default function MyPage() {
 
     //          render          //
     return (
-      <div className='my-page-bottom'></div>
+      <div className='my-page-bottom'>
+        <div className='my-page-bottom-text'>내 게시물 <span className='my-page-bottom-text-emphasis'>10</span></div>
+        <div className='my-page-bottom-container'>
+          <div className='my-page-bottom-board-list'>
+
+          </div>
+          <div className='my-page-bottom-write-box'>
+            <div className='my-page-bottom-write-button'>
+              <div className='my-page-edit-icon'></div>
+              <div className='my-page-bottom-write-button-text'>글쓰기</div>
+            </div>
+          </div>
+        </div>
+        <Pagination 
+          totalPage={totalPage} 
+          currentPage={currentPage}
+          onNextClickHandler={onNextClickHandler}
+          onPageClickHandler={onPageClickHandler}
+          onPreviousClickHandler={onPreviousClickHandler}
+        />
+      </div>
     );
   }
 
