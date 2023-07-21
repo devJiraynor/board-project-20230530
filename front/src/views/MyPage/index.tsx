@@ -9,6 +9,8 @@ import { COUNT_BY_PAGE } from 'src/constants';
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
 
+// todo: 시간 남으면 타인 페이지로 변경 //
+
 //          component          //
 // description: 마이페이지 화면 //
 export default function MyPage() {
@@ -96,6 +98,7 @@ export default function MyPage() {
     const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
 
     //          function          //
+    // todo: getPageBoardList 하드코드 제거 //
     // description: 페이지 이동을 위한 네비게이트 함수 //
     const navigator = useNavigate();
     // description: 현재 페이지의 게시물 리스트 분류 함수 //
@@ -117,7 +120,7 @@ export default function MyPage() {
     // description: 화면 첫 로드시 게시물 리스트 불러오기 //
     useEffect(() => {
       setMyPageBoardList(myPageBoardListMock);
-      setBoardCount(0);
+      setBoardCount(myPageBoardListMock.length);
     }, []);
 
     // description: 현재 페이지가 바뀔때 마다 마이페이지 게시물 분류하기 //

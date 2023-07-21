@@ -1,7 +1,20 @@
 import React from 'react'
 import './style.css';
 
+//          component          //
+// description:  게시물 쓰기 화면 //
 export default function BoardWrite() {
+  //          state          //
+
+  //          function          //
+
+  //          event handler          //
+
+  //          component          //
+
+  //          effect          //
+
+  //          render          //
   return (
     <div id='board-write-wrapper'>
       <div className='board-write-container'>
@@ -17,13 +30,12 @@ export default function BoardWrite() {
             <div className='image-upload-button'>
               <div className='image-upload-icon'></div>
             </div>
-            <input type='file' accept='image/*' />
+            <input type='file' accept='image/*' style={{ display: 'none' }} />
           </div>
         </div>
         <div className='board-write-image-container'>
-          <div className='board-write-image'>
-            <div className='board-write-image-delete-button'></div>
-          </div>
+          <img className='board-write-image' src='https://mediahub.seoul.go.kr/uploads/mediahub/2022/04/dARMGrSwPqzzyxWOdiHylRSWjQpNiYVs.jpg' />
+          <div className='board-write-image-delete-button'></div>
         </div>
       </div>
     </div>
