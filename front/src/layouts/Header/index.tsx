@@ -1,19 +1,23 @@
 import React, { useState } from 'react'
 import './style.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useBoardWriteStore } from 'src/stores';
 
 export default function Header() {
 
   const [searchState, setSearchState] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(true);
 
-  const navigator = useNavigate();
   const { pathname } = useLocation();
+  const { boardTitle, boardContent } = useBoardWriteStore();
+
+  const navigator = useNavigate();
 
   const showSearch = pathname !== '/my-page' && pathname !== '/board/write' && pathname.indexOf('/board/update') === -1;
   const isAuth = pathname === '/auth';
   const isMyPage = pathname === '/my-page';
   const showUpload = pathname === '/board/write' || pathname.indexOf('/board/update') !== -1;
+  const activeUpload = boardTitle !== '' && boardContent !== '';
 
   const onLogoClickHandler = () => {
     navigator('/');
@@ -31,6 +35,10 @@ export default function Header() {
   const onSignOutButtonClickHandler = () => {
     setLogin(false);
     navigator('/');
+  }
+
+  const onUploadButtonClickHandler = () => {
+    
   }
 
   return (
@@ -54,7 +62,8 @@ export default function Header() {
         ))}
         {!isAuth && (
           isMyPage ? (<div className='header-white-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>) :
-          showUpload ? (<div className='header-black-disable-button'>업로드</div>) :
+          showUpload && activeUpload ? (<div className='header-black-button' onClick={onUploadButtonClickHandler}>업로드</div>) :
+          showUpload && !activeUpload ? (<div className='header-black-disable-button'>업로드</div>) :
           login ? (<div className='header-white-button' onClick={onMyPageButtonClickHandler}>마이페이지</div>) :
                   (<div className='header-black-button' onClick={onSignInButtonClickHandler}>로그인</div>)
         )}
