@@ -327,3 +327,46 @@ export const boardDetailMock = {
   boardImage: 'https://png.pngtree.com/thumb_back/fh260/background/20210207/pngtree-texture-black-minimalistic-background-image_556936.jpg',
   boardNumber: 3,
 }
+
+export const likeListMock = [
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+  {
+    likeUserProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+    likeUserNickname: '안녕하세요나는주코야키',
+    likeUserEmail: 'email@email.com',
+  },
+]
