@@ -9,29 +9,49 @@ import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
 
 import './style.css';
 
+//          component          //
+// description: 인증 화면 //
 export default function Authentication() {
 
+  //          state          //
+  // description: 로그인 혹은 회원가입 뷰 상태 //
   const [view, setView] = useState<'sign-in' | 'sign-up'>('sign-in');
 
+  //          function          //
+  // description: 페이지 이동을 위한 네비게이트 함수 //
   const navigator = useNavigate();
 
+  //          event handler          //
+  
+  //          component          //
+  // description: 로그인 카드 컴포넌트 //
   const SignInCard = () => {
-    const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [error, setError] = useState<boolean>(false);
 
-    const [email, setEmail] = useState<string>(signInMock.email);
-    const [password, setPassword] = useState<string>(signInMock.password);
-
+    //          state          //
+    // description: 로그인 유저 정보 상태 //
     const { setUser } = useUserStore();
 
+    // description: 비밀번호 인풋 타입 상태 //
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    // description: 로그인 에러 상태 //
+    const [error, setError] = useState<boolean>(false);
+    // description: 이메일 입력 값 상태 //
+    const [email, setEmail] = useState<string>(signInMock.email);
+    // description: 비밀번호 입력 값 상태 //
+    const [password, setPassword] = useState<string>(signInMock.password);
+
+    //          function          //
+
+    //          event handler          //
+    // description: 비밀번호 타입 변경 버튼 클릭 이벤트 //
     const onPasswordIconClickHandler = () => {
       setShowPassword(!showPassword);
     }
-
+    // description: 회원가입 이동 클릭 이벤트 //
     const onSignUpClickHandler = () => {
       setView('sign-up');
     }
-
+    // description: 로그인 버튼 클릭 이벤트 //
     const onSignInButtonClickHandler = () => {
       if (email !== signInMock.email || password !== signInMock.password) {
         setError(true);
@@ -41,6 +61,11 @@ export default function Authentication() {
       navigator('/');
     }
 
+    //          component          //
+
+    //          effect          //
+
+    //          render          //
     return (
       <div className='auth-card'>
         <div className='auth-card-top'>
@@ -67,58 +92,50 @@ export default function Authentication() {
     )
   }
 
+  //          component          //
+  // description: 회원가입 카드 컴포넌트 //
   const SignUpCard = () => {
 
+    //          state          //
+    // description: 다음 포스트 (우편번호검색) 팝업 상태 //
     const open = useDaumPostcodePopup();
-
+    // description: 회원가입 카드 페이지 상태 //
     const [page, setPage] = useState<1 | 2>(2);
+    // description: 비밀번호 인풋 타입 상태 //
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    // description: 비밀번호 확인 인풋 타입 상태 //
     const [showPasswordCheck, setShowPassowrdCheck] = useState<boolean>(false);
-
+    // description: 이메일 패턴 에러 상태 //
     const [emailPatternError, setEmailPatternError] = useState<boolean>(false);
+    // description: 이메일 중복 에러 상태 //
     const [emailDuplicationError, setEmailDuplicationError] = useState<boolean>(false);
+    // description: 비밀번호 길이 에러 상태 //
     const [passwordError, setPasswordError] = useState<boolean>(false);
+    // description: 비밀번호 확인 에러 상태 //
     const [passwordCheckError, setPasswordCheckError] = useState<boolean>(false);
-
+    // description: 닉네임 에러 상태 //
     const [nicknameError, setNicknameError] = useState<boolean>(false);
+    // description: 휴대전화번호 패턴 에러 상태 //
     const [telNumberError, setTelNumberError] = useState<boolean>(false);
+    // description: 주소 에러 상태 //
     const [addressError, setAddressError] = useState<boolean>(false);
-
+    // description: 이메일 입력값 상태 //
     const [email, setEmail] = useState<string>('');
+    // description: 비밀번호 입력값 상태 //
     const [password, setPassword] = useState<string>('');
+    // description: 비밀번호 확인 입력값 상태 //
     const [passwordCheck, setPasswordCheck] = useState<string>('');
-
+    // description: 닉네임 입력값 상태 //
     const [nickname, setNickname] = useState<string>('');
+    // description: 휴대전화번호 입력값 상태 //
     const [telNumber, setTelNumber] = useState<string>('');
+    // description: 주소 입력값 상태 //
     const [address, setAddress] = useState<string>('');
+    // description: 상세주소 입력값 상태 //
     const [addressDetail, setAddressDetail] = useState<string>('');
 
-    const onPasswordIconClickHandler = () => {
-      setShowPassword(!showPassword);
-    }
-
-    const onPasswordCheckIconClickHandler = () => {
-      setShowPassowrdCheck(!showPasswordCheck);
-    }
-
-    const onAddressIconClickHandler = () => {
-      open({ onComplete });
-    }
-
-    const onComplete = (data: Address) => {
-      const address = data.address;
-      setAddress(address);
-    }
-
-    const onButtonClickHandler = () => {
-      if (page === 1) checkPage1();
-      if (page === 2) checkPage2();
-    }
-
-    const onSignInClickHandler = () => {
-      setView('sign-in');
-    }
-
+    //          function          //
+    // description: 페이지1에서 페이지2로 이동 시 검증 함수 //
     const checkPage1 = () => {
       const emailPatternFlag = !emailPattern.test(email);
       const passwordFlag = password.length < 8;
@@ -130,7 +147,7 @@ export default function Authentication() {
 
       if (!emailPatternFlag && !passwordFlag && !passwordCheckFlag) setPage(2);
     }
-
+    // description: 페이지2에서 회원가입 시 검증 함수 //
     const checkPage2 = () => {
       const telNumberFlag = !telNumberPattern.test(telNumber);
 
@@ -141,6 +158,39 @@ export default function Authentication() {
       if (!telNumberFlag && nickname && address) setView('sign-in');
     }
 
+    //          event handler          //
+    // description: 비밀번호 타입 변경 버튼 클릭 이벤트 //
+    const onPasswordIconClickHandler = () => {
+      setShowPassword(!showPassword);
+    }
+    // description: 비밀번호 확인 타입 변경 버튼 클릭 이벤트 //
+    const onPasswordCheckIconClickHandler = () => {
+      setShowPassowrdCheck(!showPasswordCheck);
+    }
+    // description: 주소 검색 버튼 클릭 이벤트 //
+    const onAddressIconClickHandler = () => {
+      open({ onComplete });
+    }
+    // description: 다음 혹은 회원가입 버튼 클릭 이벤트 //
+    const onButtonClickHandler = () => {
+      if (page === 1) checkPage1();
+      if (page === 2) checkPage2();
+    }
+    // description: 로그인 이동 버튼 클릭 이벤트 //
+    const onSignInClickHandler = () => {
+      setView('sign-in');
+    }
+    // description: 주소 검색 완료 이벤트 //
+    const onComplete = (data: Address) => {
+      const address = data.address;
+      setAddress(address);
+    }
+
+    //          component          //
+
+    //          effect          //
+
+    //          render          //
     return (
       <div className='auth-card'>
         <div className='auth-card-top'>
@@ -176,7 +226,10 @@ export default function Authentication() {
       </div>
     )
   }
+  
+  //          effect          //
 
+  //          render          //
   return (
     <div id='auth-wrapper'>
       <div className='auth-left'>
