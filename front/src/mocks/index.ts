@@ -1,4 +1,9 @@
-//! 게시판 리스트 아이템 목(임시) 데이터 //
+export const userMock = {
+  email: 'email@email.com',
+  nickname: '주코야키',
+  profileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
+}
+
 export const boardListItemMock = {
   writerProfileImage: 'https://cdn.thebilliards.kr/news/photo/202305/20293_20326_517.jpg',
   writerNickName: '안녕하세요나는주코야키',

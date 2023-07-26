@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './style.css';
 import InputBox from 'src/components/InputBox';
 import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
-import { signInMock } from 'src/mocks';
+import { signInMock, userMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
 import { useDaumPostcodePopup, Address } from 'react-daum-postcode';
+import { useUserStore } from 'src/stores';
 
 export default function Authentication() {
 
@@ -16,8 +17,10 @@ export default function Authentication() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
 
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>(signInMock.email);
+    const [password, setPassword] = useState<string>(signInMock.password);
+
+    const { setUser } = useUserStore();
 
     const onPasswordIconClickHandler = () => {
       setShowPassword(!showPassword);
@@ -32,6 +35,7 @@ export default function Authentication() {
         setError(true);
         return;
       }
+      setUser(userMock);
       navigator('/');
     }
 
