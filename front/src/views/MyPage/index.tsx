@@ -1,14 +1,16 @@
-import { ChangeEvent, useRef, useState, useEffect } from 'react'
-import './style.css';
-import DefaultProflie from './asset/my_page_profile_default.png';
-import Pagination from 'src/components/Pagination';
-import { usePagination } from 'src/hooks';
+import { ChangeEvent, useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { MyPageListResponseDto } from 'src/interfaces/response';
+import { usePagination } from 'src/hooks';
+import { useUserStore } from 'src/stores';
+import BoardListItem from 'src/components/BoardListItem';
+import Pagination from 'src/components/Pagination';
 import { myPageBoardListMock } from 'src/mocks';
 import { COUNT_BY_PAGE } from 'src/constants';
-import BoardListItem from 'src/components/BoardListItem';
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from 'src/stores';
+
+import './style.css';
+import DefaultProflie from './asset/my_page_profile_default.png';
 
 // todo: 시간 남으면 타인 페이지로 변경 //
 

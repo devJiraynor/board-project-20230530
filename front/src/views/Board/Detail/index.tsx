@@ -1,15 +1,16 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import './style.css';
+import { useState, useEffect, ChangeEvent } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { BoardDetailResponseDto } from 'src/interfaces/response';
 import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
-import { useNavigate, useParams } from 'react-router-dom';
-import LikeListResponseDto from 'src/interfaces/response/like-list.response.dto';
-import CommentListItem from 'src/components/CommentListItem';
-import CommentListResponseDto from 'src/interfaces/response/comment-list.response.dto';
-import Pagination from 'src/components/Pagination';
+import { LikeListResponseDto, CommentListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
-import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
 import { useUserStore } from 'src/stores';
+import CommentListItem from 'src/components/CommentListItem';
+import Pagination from 'src/components/Pagination';
+import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
+
+import './style.css';
 
 //          component          //
 // description: 게시물 상세 화면 //

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import './style.css';
-import InputBox from 'src/components/InputBox';
-import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
-import { signInMock, userMock } from 'src/mocks';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDaumPostcodePopup, Address } from 'react-daum-postcode';
+
 import { useUserStore } from 'src/stores';
+import InputBox from 'src/components/InputBox';
+import { signInMock, userMock } from 'src/mocks';
+import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
+
+import './style.css';
 
 export default function Authentication() {
 
