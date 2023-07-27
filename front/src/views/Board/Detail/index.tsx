@@ -8,7 +8,7 @@ import { usePagination } from 'src/hooks';
 import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
+import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import './style.css';
 
@@ -66,7 +66,8 @@ export default function BoardDetail() {
     //          event handler          //
     // description: 작성자 닉네임 클릭 이벤트 //
     const onWriterNicknameClickHandler = () => {
-      navigator(`/user-page/${board?.writerEmail}`);
+      if (!board) return;
+      navigator(USER_PAGE_PATH(board.writerEmail));
     }
     // description: more 버튼 클릭 이벤트 //
     const onMoreButtonClickHandler = () => {
@@ -74,11 +75,12 @@ export default function BoardDetail() {
     }
     // description: 수정 버튼 클릭 이벤트 //
     const onUpdateButtonClickHandler = () => {
-      navigator(`/board/update/${boardNumber}`);
+      if (!board) return;
+      navigator(BOARD_UPDATE_PATH(board.boardNumber));
     }
     // description: 삭제 버튼 클릭 이벤트 //
     const onDeleteButtonClickHandler = () => {
-      navigator('/');
+      navigator(MAIN_PATH);
     }
     // description: 좋아요 버튼 클릭 이벤트 //
     const onFavoriteButtonClickHandler = () => {
@@ -116,7 +118,7 @@ export default function BoardDetail() {
           <div className='board-detail-meta-container'>
             <div className='board-detail-meta-left'>
               <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage})` }}></div>
-              <div className='board-detail-wrtier-nickname' onClick={onWriterNicknameClickHandler}>{board?.writerNickName}</div>
+              <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{board?.writerNickName}</div>
               <div className='board-detail-write-date'>{'\|'}</div>
               <div className='board-detail-write-date'>{board?.writeDate}</div>
             </div>

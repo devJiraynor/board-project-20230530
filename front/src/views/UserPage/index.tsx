@@ -7,7 +7,7 @@ import { useUserStore } from 'src/stores';
 import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
 import { myPageBoardListMock } from 'src/mocks';
-import { COUNT_BY_PAGE } from 'src/constants';
+import { AUTH_PATH, BOARD_WRITE_PATH, COUNT_BY_PAGE, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import './style.css';
 import DefaultProflie from './asset/my_page_profile_default.png';
@@ -137,16 +137,17 @@ export default function UserPage() {
     //          event handler          //
     // description: 글쓰기 버튼 클릭 이벤트 //
     const onWriteButtonClickHandler = () => {
-      navigator('/board/write');
+      navigator(BOARD_WRITE_PATH());
     }
     // description: 내 게시물로 가기 버튼 클릭 이벤트 //
     const onMoveMyPageButtonClickHanlder = () => {
       if (!user) {
         alert('로그인이 필요합니다.');
-        navigator('/auth');
+        navigator(AUTH_PATH);
         return;
       }
-      navigator(`/user-page/${user.email}`);
+      if (!userEmail) return;
+      navigator(USER_PAGE_PATH(userEmail));
     }
 
     //          component          //
@@ -208,7 +209,7 @@ export default function UserPage() {
   //          effect          //
   // description: 유저 이메일 상태가 바뀔 때마다 실행 //
   useEffect(() => {
-    if (!userEmail) navigator('/');
+    if (!userEmail) navigator(MAIN_PATH);
 
     const isMyPage = user?.email === userEmail;
     setMyPage(isMyPage);

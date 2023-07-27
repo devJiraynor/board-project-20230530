@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CurrentListResponseDto, MyPageListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
 
 import './style.css';
+import { BOARD_DETAIL_PATH } from 'src/constants';
 
 interface Props {
   item: CurrentListResponseDto | SearchListResponseDto | MyPageListResponseDto;
@@ -25,7 +26,7 @@ export default function BoardListItem({ item }: Props) {
   //          event handler          //
   // description: 컴포넌트 클릭 이벤트 //
   const onClickHandler = () => {
-    navigator(`/board/detail/${boardNumber}`);
+    navigator(BOARD_DETAIL_PATH(boardNumber));
   }
   
   //          component          //
