@@ -65,18 +65,16 @@ export default function Authentication() {
         email,
         password
       }
-
-      axios.get('http://localhost:3000').then((response) => console.log(response));
-
-      // axios.post('url', data)
-      //   .then((response) => {
-      //     // todo: 성공 시 처리
-      //     setUser(userMock);
-      //     navigator(MAIN_PATH);
-      //   })
-      //   .catch((error) => {
-      //     // todo: 실패 시 처리
-      //   });
+      
+      axios.post('url', data)
+        .then((response) => {
+          // todo: 성공 시 처리
+          setUser(userMock);
+          navigator(MAIN_PATH);
+        })
+        .catch((error) => {
+          // todo: 실패 시 처리
+        });
     }
 
     //          component          //
