@@ -8,6 +8,8 @@ import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 
 import './style.css';
+import axios from 'axios';
+import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
 
 //          component          //
 // description: 인증 화면 //
@@ -52,13 +54,29 @@ export default function Authentication() {
       setView('sign-up');
     }
     // description: 로그인 버튼 클릭 이벤트 //
-    const onSignInButtonClickHandler = () => {
+    const onSignInButtonClickHandler = async () => {
+
       if (email !== signInMock.email || password !== signInMock.password) {
         setError(true);
         return;
       }
-      setUser(userMock);
-      navigator(MAIN_PATH);
+
+      const data: SignInRequestDto = {
+        email,
+        password
+      }
+
+      axios.get('http://localhost:3000').then((response) => console.log(response));
+
+      // axios.post('url', data)
+      //   .then((response) => {
+      //     // todo: 성공 시 처리
+      //     setUser(userMock);
+      //     navigator(MAIN_PATH);
+      //   })
+      //   .catch((error) => {
+      //     // todo: 실패 시 처리
+      //   });
     }
 
     //          component          //
@@ -155,7 +173,25 @@ export default function Authentication() {
       setNicknameError(!nickname);
       setAddressError(!address);
 
-      if (!telNumberFlag && nickname && address) setView('sign-in');
+      // if (!telNumberFlag && nickname && address) setView('sign-in');
+
+      // description: 백엔드로 데이터 전송 (회원가입 포맷에 맞춰서) //
+      const data: SignUpRequestDto = {
+        email,
+        password,
+        nickname,
+        telNumber,
+        address,
+        addressDetail
+      }
+
+      axios.post('url', data)
+        .then((response) => {
+          // todo: 정상 결과
+          setView('sign-in');
+        }).catch((error) => {
+          // todo: 실패 결과
+        });
     }
 
     //          event handler          //
