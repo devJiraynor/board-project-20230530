@@ -25,9 +25,4 @@ public class SignInResponseDto extends ResponseDto {
     return result;
   }
 
-  public static ResponseDto databaseError() {
-    ResponseDto result = new ResponseDto("DE", "Database Error");
-    return result;
-  }
-
 }
