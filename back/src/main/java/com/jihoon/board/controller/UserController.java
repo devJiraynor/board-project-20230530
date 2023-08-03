@@ -16,24 +16,32 @@ import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
 import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
+import com.jihoon.board.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 // controller: 유저 컨트롤러 //
 @RestController
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class UserController {
+
+  private final UserService userService;
   
   // API : 유저 정보 불러오기 메서드 //
   @GetMapping("/{email}")
   public ResponseEntity<?> getUser(
     @PathVariable("email") String email
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = userService.getUser(email);
+    return response;
   }
 
   // API : 로그인 유저 정보 불러오기 메서드 //
   @GetMapping("")
   public ResponseEntity<?> getSignInUser() {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = userService.getSignInUser();
+    return response;
   }
 
   // API : 유저 닉네임 수정 메서드 //
@@ -42,8 +50,8 @@ public class UserController {
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserNicknameRequestDto requestBody
   ) {
-    PatchUserNicknameResponseDto responseBody = PatchUserNicknameResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PatchUserNicknameResponseDto> response = userService.patchUserNickname(email, requestBody);
+    return response;
   }
 
   // API : 유저 프로필 이미지 수정 메서드 //
@@ -52,8 +60,8 @@ public class UserController {
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserProfileRequestDto requestBody
   ) {
-    PatchUserProfileResponseDto responseBody = PatchUserProfileResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PatchUserProfileResponseDto> response = userService.patchUserProfile(email, requestBody);
+    return response;
   }
 
 }
