@@ -2,6 +2,7 @@ package com.jihoon.board.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jihoon.board.common.response.CustomResponse;
 import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
+import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
+import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
 
 // controller: 유저 컨트롤러 //
 @RestController
@@ -35,20 +38,22 @@ public class UserController {
 
   // API : 유저 닉네임 수정 메서드 //
   @PatchMapping("/{email}/nickname")
-  public ResponseEntity<?> patchUserNickname(
+  public ResponseEntity<? super PatchUserNicknameResponseDto> patchUserNickname(
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserNicknameRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PatchUserNicknameResponseDto responseBody = PatchUserNicknameResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
   // API : 유저 프로필 이미지 수정 메서드 //
   @PatchMapping("/{email}/profile")
-  public ResponseEntity<?> patchUserProfile(
+  public ResponseEntity<? super PatchUserProfileResponseDto> patchUserProfile(
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserProfileRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PatchUserProfileResponseDto responseBody = PatchUserProfileResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
 }
