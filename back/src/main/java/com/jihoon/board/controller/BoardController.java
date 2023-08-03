@@ -24,22 +24,30 @@ import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
 import com.jihoon.board.dto.response.board.PutFavoriteResponseDto;
+import com.jihoon.board.service.BoardService;
+
+import lombok.RequiredArgsConstructor;
 
 // contorller : 게시물 컨트롤러 //
 @RestController
 @RequestMapping("/api/v1/board")
+@RequiredArgsConstructor
 public class BoardController {
+
+  private final BoardService boardService;
   
   // API : Top3 게시물 불러오기 메서드 //
   @GetMapping("/top-3")
   public ResponseEntity<?> getTop3() {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getTop3();
+    return response;
   }
 
   // API : 최신 게시물 리스트 불러오기 메서드 //
   @GetMapping("/current-board")
   public ResponseEntity<?> getCurrentBoard() {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getCurrentBoard();
+    return response;
   }
 
   // API : 게시물 불러오기 메서드 //
@@ -47,7 +55,8 @@ public class BoardController {
   public ResponseEntity<?> getBoard(
     @PathVariable("boardNumber") Integer boardNumber
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getBoard(boardNumber);
+    return response;
   }
 
   // API : 검색 게시물 리스트 불러오기 메서드 //
@@ -55,7 +64,8 @@ public class BoardController {
   public ResponseEntity<?> getSearchBoardList(
     @PathVariable("searchWord") String searchWord
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getSearchBoardList(searchWord);
+    return response;
   }
 
   // API : 특정 게시물의 좋아요 리스트 불러오기 메서드 //
@@ -63,7 +73,8 @@ public class BoardController {
   public ResponseEntity<?> getFavoritList(
     @PathVariable("boardNumber") Integer boardNumber
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getFavoritList(boardNumber);
+    return response;
   }
 
   // API : 특정 게시물의 댓글 리스트 불러오 메서드 //
@@ -71,7 +82,8 @@ public class BoardController {
   public ResponseEntity<?> getCommentList(
     @PathVariable("boardNumber") Integer boardNumber
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getCommentList(boardNumber);
+    return response;
   }
 
   // API : 특정 유저의 게시물 리스트 불러오기 메서드 //
@@ -79,7 +91,8 @@ public class BoardController {
   public ResponseEntity<?> getUserList(
     @PathVariable("email") String email
   ) {
-    return CustomResponse.serviceUnavailable;
+    ResponseEntity<?> response = boardService.getUserList(email);
+    return response;
   }
 
   // API : 게시물 작성 메서드 //
@@ -87,26 +100,28 @@ public class BoardController {
   public ResponseEntity<? super PostBoardResponseDto> postBoard(
     @RequestBody @Valid PostBoardRequestDto requestBody
   ) {
-    PostBoardResponseDto responseBody = PostBoardResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody);
+    return response;
   }
 
   // API : 댓글 작성 메서드 //
   @PostMapping("/{boardNumber}/comment")
   public ResponseEntity<? super PostCommentResponseDto> postComment(
+    @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PostCommentRequestDto requestBody
   ) {
-    PostCommentResponseDto responseBody = PostCommentResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(boardNumber, requestBody);
+    return response;
   }
 
   // API : 좋아요 기능 메서드 //
   @PutMapping("/{boardNumber}/favorit")
-  public ResponseEntity<? super PutFavoriteResponseDto> putFavorit(
+  public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
+    @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PutFavoritRequestDto requestBody
   ) {
-    PutFavoriteResponseDto responseBody = PutFavoriteResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, requestBody);
+    return response;
   }
 
   // API : 게시물 수정 메서드 //
@@ -115,8 +130,8 @@ public class BoardController {
     @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PatchBoardRequestDto requestBody
   ) {
-    PatchBoardResponseDto responseBody = PatchBoardResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(boardNumber, requestBody);
+    return response;
   }
 
   // API : 게시물 삭제 메서드 //
@@ -125,8 +140,8 @@ public class BoardController {
     @PathVariable("boardNumber") Integer boardNumber,
     @PathVariable("email") String email
   ) {
-    DeleteBoardResponseDto responseBody = DeleteBoardResponseDto.success();
-    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
+    return response;
   }
 
 }
