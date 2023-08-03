@@ -21,10 +21,10 @@ public class AuthController {
   
   // API : 회원가입 메서드 //
   @PostMapping("/sign-up")
-  public ResponseEntity<SignUpResponseDto> signUp(
+  public ResponseEntity<? super SignUpResponseDto> signUp(
     @RequestBody @Valid SignUpRequestDto requestBody
   ) {
-    SignUpResponseDto response = SignUpResponseDto.existedEmail();
+    SignUpResponseDto response = SignUpResponseDto.success();
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
