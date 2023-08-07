@@ -1,5 +1,7 @@
 package com.jihoon.board.service.implement;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,13 +28,23 @@ public class AuthServiceImplement implements AuthService {
   public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
     String token = null;
 
+    String email = dto.getEmail();
+    String password = dto.getPassword();
+
     try {
-    // todo: 이메일로 entity 조회 //
+    // description: 이메일로 entity 조회 //
+    UserEntity userEntity = userRepository.findByEmail(email);
 
-    // todo: 존재하지 않는 email 확인 //
+    // description: 존재하지 않는 email 확인 //
+    if (userEntity == null) return SignInResponseDto.signInDataMismatch();
 
-    // todo: 비밀번호 일치여부 확인 //
-    
+    // description: 비밀번호 일치여부 확인 //
+    boolean equalPassword = userEntity.getPassword().equals(password);
+    if (!equalPassword) return SignInResponseDto.signInDataMismatch();
+
+    // todo: Security 적용 후 변경 //
+    token = UUID.randomUUID().toString();
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();

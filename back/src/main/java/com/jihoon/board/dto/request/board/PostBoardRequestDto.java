@@ -10,6 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostBoardRequestDto {
+
+  @NotBlank
+  private String writerEmail;
+
   @NotBlank
   private String title;
 
