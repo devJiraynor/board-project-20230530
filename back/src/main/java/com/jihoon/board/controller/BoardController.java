@@ -2,7 +2,6 @@ package com.jihoon.board.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jihoon.board.common.response.CustomResponse;
 import com.jihoon.board.dto.request.board.PatchBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostCommentRequestDto;

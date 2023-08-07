@@ -7,5 +7,5 @@ import com.jihoon.board.entity.BoardEntity;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
-  
+  boolean existsByBoardNumber(Integer boardNumber);
 }
