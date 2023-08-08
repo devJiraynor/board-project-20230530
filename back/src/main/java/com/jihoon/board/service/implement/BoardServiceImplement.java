@@ -174,8 +174,37 @@ public class BoardServiceImplement implements BoardService {
 
   @Override
   public ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, PatchBoardRequestDto dto) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'patchBoard'");
+    
+    String userEmail = dto.getUserEmail();
+
+    try {
+      // todo: 추후 controller로 이동 //
+      if (boardNumber == null) return PatchBoardResponseDto.noExistedBoard();
+
+      // description: 존재하는 유저인지 확인 //
+      boolean hasUser = userRepository.existsByEmail(userEmail);
+      if (!hasUser) return PatchBoardResponseDto.noExistedUser();
+
+      // description: 존재하는 게시물인지 확인 //
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return PatchBoardResponseDto.noExistedBoard();
+
+      // description: 작성자 이메일과 입력받은 이메일이 같은지 확인 //
+      boolean equalWriter = boardEntity.getWriterEmail().equals(userEmail);
+      if (!equalWriter) return PatchBoardResponseDto.noPermission();
+
+      // description: 수정 //
+      boardEntity.patch(dto);
+      // description: 데이터베이스에 저장 //
+      boardRepository.save(boardEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return PatchBoardResponseDto.success();
+
   }
 
   @Override
@@ -189,17 +218,26 @@ public class BoardServiceImplement implements BoardService {
       // todo: 추후 controller로 이동 //
       if (email == null) return DeleteBoardResponseDto.noExistedUser();
 
-      // todo: 존재하는 유저인지 확인 //
+      // description: 존재하는 유저인지 확인 //
+      boolean hasUser = userRepository.existsByEmail(email);
+      if (!hasUser) return DeleteBoardResponseDto.noExistedUser();
 
-      // todo: 존재하는 게시물인지 확인 //
+      // description: 존재하는 게시물인지 확인 //
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return DeleteBoardResponseDto.noExistedBoard();
 
-      // todo: 게시물 작성자 이메일과 입력받은 이메일이 같은지 확인 //
+      // description: 게시물 작성자 이메일과 입력받은 이메일이 같은지 확인 //
+      boolean equalWriter = boardEntity.getWriterEmail().equals(email);
+      if (!equalWriter) return DeleteBoardResponseDto.noPermission();
 
-      // todo: 댓글 데이터 삭제 //
+      // description: 댓글 데이터 삭제 //
+      commentRepository.deleteByBoardNumber(boardNumber);
 
-      // todo: 좋아요 데이터 삭제 //
+      // description: 좋아요 데이터 삭제 //
+      favoriteRepository.deleteByBoardNumber(boardNumber);
 
-      // todo: 게시물 삭제 //
+      // description: 게시물 삭제 //
+      boardRepository.delete(boardEntity);
 
     } catch (Exception exception) {
       exception.printStackTrace();

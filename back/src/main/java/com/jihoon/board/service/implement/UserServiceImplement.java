@@ -5,12 +5,20 @@ import org.springframework.stereotype.Service;
 
 import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
+import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
+import com.jihoon.board.entity.UserEntity;
+import com.jihoon.board.repository.UserRepository;
 import com.jihoon.board.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserServiceImplement implements UserService {
+
+  private final UserRepository userRepository;
 
   @Override
   public ResponseEntity<?> getUser(String email) {
@@ -27,15 +35,57 @@ public class UserServiceImplement implements UserService {
   @Override
   public ResponseEntity<? super PatchUserNicknameResponseDto> patchUserNickname(String email,
       PatchUserNicknameRequestDto dto) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'patchUserNickname'");
+
+    String nickname = dto.getNickname();
+    
+    try {
+      // description: 존재하는 유저인지 확인 //
+      UserEntity userEntity = userRepository.findByEmail(email);
+      if (userEntity == null) return PatchUserNicknameResponseDto.noExistedUser();
+
+      // description: 중복되는 닉네임인지 확인 //
+      boolean hasNickname = userRepository.existsByNickname(nickname);
+      if (hasNickname) return PatchUserNicknameResponseDto.existedNickname();
+
+      // description: 수정 //
+      userEntity.setNickname(nickname);
+
+      // description: 데이터베이스에 저장 //
+      userRepository.save(userEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return PatchUserNicknameResponseDto.success();
+
   }
 
   @Override
   public ResponseEntity<? super PatchUserProfileResponseDto> patchUserProfile(String email,
       PatchUserProfileRequestDto dto) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'patchUserProfile'");
+    
+    String profileImage = dto.getProfileImage();
+
+    try {
+
+      // description: 존재하는 유저인지 확인 //
+      UserEntity userEntity = userRepository.findByEmail(email);
+      if (userEntity == null) return PatchUserProfileResponseDto.noExistedUser();
+
+      // description: 수정 //
+      userEntity.setProfileImageUrl(profileImage);
+
+      // description: 데이터베이스에 저장 //
+      userRepository.save(userEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return PatchUserProfileResponseDto.success();
   }
   
 }
