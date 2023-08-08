@@ -18,6 +18,7 @@ import com.jihoon.board.dto.request.board.PostBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -43,8 +44,8 @@ public class BoardController {
 
   // API : 최신 게시물 리스트 불러오기 메서드 //
   @GetMapping("/current-board")
-  public ResponseEntity<?> getCurrentBoard() {
-    ResponseEntity<?> response = boardService.getCurrentBoard();
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrentBoard() {
+    ResponseEntity<? super GetCurrentBoardResponseDto> response = boardService.getCurrentBoard();
     return response;
   }
 

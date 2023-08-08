@@ -1,5 +1,7 @@
 package com.jihoon.board.service.implement;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +10,9 @@ import com.jihoon.board.dto.request.board.PostBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.ResponseDto;
+import com.jihoon.board.dto.response.board.BoardListResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -40,9 +44,21 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getCurrentBoard() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCurrentBoard'");
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrentBoard() {
+    
+    List<BoardListResponseDto> boardList = null;
+
+    try {
+
+      
+
+    } catch(Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetCurrentBoardResponseDto.success(boardList);
+
   }
 
   @Override
