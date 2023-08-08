@@ -113,7 +113,7 @@ public class BoardController {
   }
 
   // API : 좋아요 기능 메서드 //
-  @PutMapping("/{boardNumber}/favorit")
+  @PutMapping("/{boardNumber}/favorite")
   public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
     @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PutFavoritRequestDto requestBody

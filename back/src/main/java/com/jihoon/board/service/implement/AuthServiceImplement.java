@@ -32,18 +32,18 @@ public class AuthServiceImplement implements AuthService {
     String password = dto.getPassword();
 
     try {
-    // description: 이메일로 entity 조회 //
-    UserEntity userEntity = userRepository.findByEmail(email);
+      // description: 이메일로 entity 조회 //
+      UserEntity userEntity = userRepository.findByEmail(email);
 
-    // description: 존재하지 않는 email 확인 //
-    if (userEntity == null) return SignInResponseDto.signInDataMismatch();
+      // description: 존재하지 않는 email 확인 //
+      if (userEntity == null) return SignInResponseDto.signInDataMismatch();
 
-    // description: 비밀번호 일치여부 확인 //
-    boolean equalPassword = userEntity.getPassword().equals(password);
-    if (!equalPassword) return SignInResponseDto.signInDataMismatch();
+      // description: 비밀번호 일치여부 확인 //
+      boolean equalPassword = userEntity.getPassword().equals(password);
+      if (!equalPassword) return SignInResponseDto.signInDataMismatch();
 
-    // todo: Security 적용 후 변경 //
-    token = UUID.randomUUID().toString();
+      // todo: Security 적용 후 변경 //
+      token = UUID.randomUUID().toString();
 
     } catch (Exception exception) {
       exception.printStackTrace();

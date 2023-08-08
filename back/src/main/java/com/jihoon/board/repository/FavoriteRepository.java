@@ -8,5 +8,5 @@ import com.jihoon.board.entity.pk.FavoritePk;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, FavoritePk> {
-  
+  boolean existsByUserEmailAndBoardNumber(String userEmail, Integer boardNumber);
 }
