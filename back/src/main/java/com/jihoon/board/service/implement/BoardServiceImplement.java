@@ -99,6 +99,12 @@ public class BoardServiceImplement implements BoardService {
 
     try {
 
+      // description: 검색어가 제목과 내용에 포함되어 있는 데이터 조회 //
+      List<BoardViewEntity> boardViewEntities = boardViewRepository.findByTitleContainsOrContentsContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
+
+      // description: entity를 dto형태로 변환 //
+      boardList = BoardListResponseDto.copyEntityList(boardViewEntities);
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
