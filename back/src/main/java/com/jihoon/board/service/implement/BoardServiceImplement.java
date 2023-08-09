@@ -15,6 +15,7 @@ import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
+import com.jihoon.board.dto.response.board.GetUserListResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -140,9 +141,24 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getUserList(String email) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUserList'");
+  public ResponseEntity<? super GetUserListResponseDto> getUserList(String email) {
+    
+    List<BoardListResponseDto> boardList = null;
+
+    try {
+      // description: 특정 이메일에 해당하는 게시물 리스트 조회 //
+      List<BoardViewEntity> boardViewEntities = boardViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+      // description: entity를 dto로 변환 //
+      boardList = BoardListResponseDto.copyEntityList(boardViewEntities);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetUserListResponseDto.success(boardList);
+
   }
 
   @Override

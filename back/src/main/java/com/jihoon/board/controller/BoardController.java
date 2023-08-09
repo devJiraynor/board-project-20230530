@@ -21,6 +21,7 @@ import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
+import com.jihoon.board.dto.response.board.GetUserListResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -91,10 +92,10 @@ public class BoardController {
 
   // API : 특정 유저의 게시물 리스트 불러오기 메서드 //
   @GetMapping("/user-list/{email}")
-  public ResponseEntity<?> getUserList(
-    @PathVariable("email") String email
+  public ResponseEntity<? super GetUserListResponseDto> getUserList(
+    @PathVariable(value="email", required=true) String email
   ) {
-    ResponseEntity<?> response = boardService.getUserList(email);
+    ResponseEntity<? super GetUserListResponseDto> response = boardService.getUserList(email);
     return response;
   }
 

@@ -11,4 +11,5 @@ import com.jihoon.board.entity.BoardViewEntity;
 public interface BoardViewRepository extends JpaRepository<BoardViewEntity, Integer> {
   List<BoardViewEntity> findTop3ByOrderByFavoriteCountDesc();
   List<BoardViewEntity> findByTitleContainsOrContentsContainsOrderByWriteDatetimeDesc(String title, String contents);
+  List<BoardViewEntity> findByWriterEmailOrderByWriteDatetimeDesc(String email);
 }
