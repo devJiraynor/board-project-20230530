@@ -19,6 +19,7 @@ import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
 import com.jihoon.board.dto.response.board.PutFavoriteResponseDto;
 import com.jihoon.board.entity.BoardEntity;
+import com.jihoon.board.entity.BoardViewEntity;
 import com.jihoon.board.entity.CommentEntity;
 import com.jihoon.board.entity.FavoriteEntity;
 import com.jihoon.board.entity.resultSet.BoardListResultSet;
@@ -43,8 +44,23 @@ public class BoardServiceImplement implements BoardService {
 
   @Override
   public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTop3'");
+    
+    List<BoardListResponseDto> top3 = null;
+
+    try {
+      // description: 좋아요 순으로 상위 3개 게시물 조회 //
+      List<BoardViewEntity> boardViewEntities = boardViewRepository.findTop3ByOrderByFavoriteCountDesc();
+
+      // description: entity를 dto 형태로 변환 //
+      top3 = BoardListResponseDto.copyEntityList(boardViewEntities);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetTop3ResponseDto.success(top3);
+
   }
 
   @Override
