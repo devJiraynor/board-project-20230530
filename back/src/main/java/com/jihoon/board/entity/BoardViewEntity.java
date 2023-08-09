@@ -23,6 +23,7 @@ public class BoardViewEntity {
   private int commentCount;
   private int favoriteCount;
   private String writeDatetime;
+  private String writerEmail;
   private String writerProfileImage;
   private String writerNickname; 
 }

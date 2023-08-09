@@ -13,6 +13,7 @@ import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.board.BoardListResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
@@ -92,9 +93,19 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getSearchBoardList(String searchWord) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getSearchBoardList'");
+  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord) {
+    
+    List<BoardListResponseDto> boardList = null;
+
+    try {
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetSearchBoardResponseDto.success(boardList);
+
   }
 
   @Override
