@@ -7,6 +7,7 @@ import com.jihoon.board.dto.request.board.PostBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
@@ -23,7 +24,7 @@ public interface BoardService {
   // method : 최신 게시물 리스트 불러오기 메서드 //
   ResponseEntity<? super GetCurrentBoardResponseDto> getCurrentBoard();
   // method : 게시물 불러오기 메서드 //
-  ResponseEntity<?> getBoard(Integer boardNumber);
+  ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
   // method : 검색 게시물 리스트 불러오기 //
   ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord, String relataionWord);
   // method : 특정 게시물의 좋아요 리스트 불러오기 //

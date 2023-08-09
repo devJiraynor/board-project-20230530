@@ -18,6 +18,7 @@ import com.jihoon.board.dto.request.board.PostBoardRequestDto;
 import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
@@ -54,10 +55,10 @@ public class BoardController {
 
   // API : 게시물 불러오기 메서드 //
   @GetMapping("/{boardNumber}")
-  public ResponseEntity<?> getBoard(
-    @PathVariable("boardNumber") Integer boardNumber
+  public ResponseEntity<? super GetBoardResponseDto> getBoard(
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getBoard(boardNumber);
+    ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
     return response;
   }
 

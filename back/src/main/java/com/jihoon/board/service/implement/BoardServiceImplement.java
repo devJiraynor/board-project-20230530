@@ -12,6 +12,7 @@ import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.board.BoardListResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
@@ -91,9 +92,21 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getBoard(Integer boardNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getBoard'");
+  public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+    
+    BoardViewEntity boardViewEntity = null;
+
+    try {
+      // description: 게시물 번호에 해당하는 게시물 조회 //
+      boardViewEntity = boardViewRepository.findByBoardNumber(boardNumber);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetBoardResponseDto.success(boardViewEntity);
+
   }
 
   @Override
