@@ -23,11 +23,13 @@ import com.jihoon.board.entity.BoardEntity;
 import com.jihoon.board.entity.BoardViewEntity;
 import com.jihoon.board.entity.CommentEntity;
 import com.jihoon.board.entity.FavoriteEntity;
+import com.jihoon.board.entity.SearchLogEntity;
 import com.jihoon.board.entity.resultSet.BoardListResultSet;
 import com.jihoon.board.repository.BoardRepository;
 import com.jihoon.board.repository.BoardViewRepository;
 import com.jihoon.board.repository.CommentRepository;
 import com.jihoon.board.repository.FavoriteRepository;
+import com.jihoon.board.repository.SearchLogRepository;
 import com.jihoon.board.repository.UserRepository;
 import com.jihoon.board.service.BoardService;
 
@@ -42,6 +44,7 @@ public class BoardServiceImplement implements BoardService {
   private final CommentRepository commentRepository;
   private final FavoriteRepository favoriteRepository;
   private final BoardViewRepository boardViewRepository;
+  private final SearchLogRepository searchLogRepository;
 
   @Override
   public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
@@ -93,7 +96,7 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord) {
+  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord, String relationWord) {
     
     List<BoardListResponseDto> boardList = null;
 
@@ -104,6 +107,16 @@ public class BoardServiceImplement implements BoardService {
 
       // description: entity를 dto형태로 변환 //
       boardList = BoardListResponseDto.copyEntityList(boardViewEntities);
+
+      // description: 검색어 로그 저장 //
+      SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, relationWord);
+      searchLogRepository.save(searchLogEntity);
+
+      // description: 첫번째 검색이 아닐 경우 (relationWord가 null이 아님) //
+      if (relationWord != null) {
+        searchLogEntity = new SearchLogEntity(relationWord, searchWord);
+        searchLogRepository.save(searchLogEntity);
+      }
 
     } catch (Exception exception) {
       exception.printStackTrace();

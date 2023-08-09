@@ -61,12 +61,13 @@ public class BoardController {
   }
 
   // API : 검색 게시물 리스트 불러오기 메서드 //
-  @GetMapping("/search/{searchWord}")
+  @GetMapping(value={"/search/{searchWord}", "/search/{searchWord}/{relationWord}"})
   public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(
-    @PathVariable(value="searchWord", required=true) String searchWord
+    @PathVariable(value="searchWord", required=true) String searchWord,
+    @PathVariable(value="relationWord", required=false) String relationWord
   ) {
     ResponseEntity<? super GetSearchBoardResponseDto> response = 
-      boardService.getSearchBoard(searchWord);
+      boardService.getSearchBoard(searchWord, relationWord);
     return response;
   }
 
