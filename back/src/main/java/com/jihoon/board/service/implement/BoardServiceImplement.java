@@ -13,6 +13,7 @@ import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.board.BoardListResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -20,7 +21,9 @@ import com.jihoon.board.dto.response.board.PutFavoriteResponseDto;
 import com.jihoon.board.entity.BoardEntity;
 import com.jihoon.board.entity.CommentEntity;
 import com.jihoon.board.entity.FavoriteEntity;
+import com.jihoon.board.entity.resultSet.BoardListResultSet;
 import com.jihoon.board.repository.BoardRepository;
+import com.jihoon.board.repository.BoardViewRepository;
 import com.jihoon.board.repository.CommentRepository;
 import com.jihoon.board.repository.FavoriteRepository;
 import com.jihoon.board.repository.UserRepository;
@@ -36,9 +39,10 @@ public class BoardServiceImplement implements BoardService {
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
   private final FavoriteRepository favoriteRepository;
+  private final BoardViewRepository boardViewRepository;
 
   @Override
-  public ResponseEntity<?> getTop3() {
+  public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getTop3'");
   }
@@ -50,7 +54,11 @@ public class BoardServiceImplement implements BoardService {
 
     try {
 
-      
+      // description: 최신 게시물 리스트 불러오기 //
+      List<BoardListResultSet> resultSets = boardRepository.getCurrentList();
+
+      // description: 검색 결과를 ResponseDto 형태로 변환 //
+      boardList = BoardListResponseDto.copyList(resultSets);
 
     } catch(Exception exception) {
       exception.printStackTrace();

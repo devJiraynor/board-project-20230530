@@ -8,6 +8,7 @@ import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostCommentResponseDto;
@@ -16,7 +17,7 @@ import com.jihoon.board.dto.response.board.PutFavoriteResponseDto;
 public interface BoardService {
   
   // method : Top3 게시물 불러오기 메서드 //
-  ResponseEntity<?> getTop3();
+  ResponseEntity<? super GetTop3ResponseDto> getTop3();
   // method : 최신 게시물 리스트 불러오기 메서드 //
   ResponseEntity<? super GetCurrentBoardResponseDto> getCurrentBoard();
   // method : 게시물 불러오기 메서드 //
