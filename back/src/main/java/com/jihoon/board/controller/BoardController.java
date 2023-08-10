@@ -20,6 +20,7 @@ import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetFavoriteListResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetTop3ResponseDto;
 import com.jihoon.board.dto.response.board.GetUserListResponseDto;
@@ -74,18 +75,18 @@ public class BoardController {
   }
 
   // API : 특정 게시물의 좋아요 리스트 불러오기 메서드 //
-  @GetMapping("/{boardNumber}/favorit-list")
-  public ResponseEntity<?> getFavoritList(
-    @PathVariable("boardNumber") Integer boardNumber
+  @GetMapping("/{boardNumber}/favorite-list")
+  public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getFavoritList(boardNumber);
+    ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoritList(boardNumber);
     return response;
   }
 
-  // API : 특정 게시물의 댓글 리스트 불러오 메서드 //
+  // API : 특정 게시물의 댓글 리스트 불러오기 메서드 //
   @GetMapping("/{boardNumber}/comment-list")
   public ResponseEntity<?> getCommentList(
-    @PathVariable("boardNumber") Integer boardNumber
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber
   ) {
     ResponseEntity<?> response = boardService.getCommentList(boardNumber);
     return response;
@@ -112,7 +113,7 @@ public class BoardController {
   // API : 댓글 작성 메서드 //
   @PostMapping("/{boardNumber}/comment")
   public ResponseEntity<? super PostCommentResponseDto> postComment(
-    @PathVariable("boardNumber") Integer boardNumber,
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber,
     @RequestBody @Valid PostCommentRequestDto requestBody
   ) {
     ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(boardNumber, requestBody);
@@ -122,7 +123,7 @@ public class BoardController {
   // API : 좋아요 기능 메서드 //
   @PutMapping("/{boardNumber}/favorite")
   public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
-    @PathVariable("boardNumber") Integer boardNumber,
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber,
     @RequestBody @Valid PutFavoritRequestDto requestBody
   ) {
     ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, requestBody);
@@ -132,7 +133,7 @@ public class BoardController {
   // API : 게시물 수정 메서드 //
   @PatchMapping("/{boardNumber}")
   public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
-    @PathVariable("boardNumber") Integer boardNumber,
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber,
     @RequestBody @Valid PatchBoardRequestDto requestBody
   ) {
     ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(boardNumber, requestBody);
@@ -142,8 +143,8 @@ public class BoardController {
   // API : 게시물 삭제 메서드 //
   @DeleteMapping("/{boardNumber}/{email}")
   public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
-    @PathVariable("boardNumber") Integer boardNumber,
-    @PathVariable("email") String email
+    @PathVariable(value="boardNumber", required=true) Integer boardNumber,
+    @PathVariable(value="email", required=true) String email
   ) {
     ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
     return response;
