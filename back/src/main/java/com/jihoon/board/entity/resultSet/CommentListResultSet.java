@@ -4,5 +4,5 @@ public interface CommentListResultSet {
   String getProfileImageUrl();
   String getNickname();
   String getWriteDatetime();
-  String getComments();
+  String getContents();
 }

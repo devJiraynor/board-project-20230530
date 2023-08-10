@@ -11,9 +11,11 @@ import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.board.BoardListResponseDto;
+import com.jihoon.board.dto.response.board.CommentListResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.FavoriteListResponseDto;
 import com.jihoon.board.dto.response.board.GetBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetCommentListResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetFavoriteListResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
@@ -30,6 +32,7 @@ import com.jihoon.board.entity.FavoriteEntity;
 import com.jihoon.board.entity.SearchLogEntity;
 import com.jihoon.board.entity.UserEntity;
 import com.jihoon.board.entity.resultSet.BoardListResultSet;
+import com.jihoon.board.entity.resultSet.CommentListResultSet;
 import com.jihoon.board.repository.BoardRepository;
 import com.jihoon.board.repository.BoardViewRepository;
 import com.jihoon.board.repository.CommentRepository;
@@ -177,9 +180,25 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getCommentList(Integer boardNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCommentList'");
+  public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+    
+    List<CommentListResponseDto> commentList = null;
+
+    try {
+
+      // description: 게시물의 댓글 리스트 조회 //
+      List<CommentListResultSet> resultSets = commentRepository.getCommentList(boardNumber);
+
+      // description: resultSet을 dto로 변환 //
+      commentList = CommentListResponseDto.copyList(resultSets);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetCommentListResponseDto.success(commentList);
+
   }
 
   @Override

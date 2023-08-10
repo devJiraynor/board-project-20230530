@@ -19,6 +19,7 @@ import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetCommentListResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetFavoriteListResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
@@ -85,10 +86,10 @@ public class BoardController {
 
   // API : 특정 게시물의 댓글 리스트 불러오기 메서드 //
   @GetMapping("/{boardNumber}/comment-list")
-  public ResponseEntity<?> getCommentList(
+  public ResponseEntity<? super GetCommentListResponseDto> getCommentList(
     @PathVariable(value="boardNumber", required=true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getCommentList(boardNumber);
+    ResponseEntity<? super GetCommentListResponseDto> response = boardService.getCommentList(boardNumber);
     return response;
   }
 

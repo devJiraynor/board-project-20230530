@@ -8,6 +8,7 @@ import com.jihoon.board.dto.request.board.PostCommentRequestDto;
 import com.jihoon.board.dto.request.board.PutFavoritRequestDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetBoardResponseDto;
+import com.jihoon.board.dto.response.board.GetCommentListResponseDto;
 import com.jihoon.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetFavoriteListResponseDto;
 import com.jihoon.board.dto.response.board.GetSearchBoardResponseDto;
@@ -31,7 +32,7 @@ public interface BoardService {
   // method : 특정 게시물의 좋아요 리스트 불러오기 //
   ResponseEntity<? super GetFavoriteListResponseDto> getFavoritList(Integer boardNumber);
   // method : 특정 게시물의 댓글 리스트 불러오기 //
-  ResponseEntity<?> getCommentList(Integer boardNumber);
+  ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber);
   // method : 특정 유저의 게시물 리스트 불러오기 //
   ResponseEntity<? super GetUserListResponseDto> getUserList(String email);
   // method : 게시물 작성 메서드 //
