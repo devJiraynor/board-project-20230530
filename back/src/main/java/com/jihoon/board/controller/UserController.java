@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
+import com.jihoon.board.dto.response.user.GetUserResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
 import com.jihoon.board.service.UserService;
@@ -28,10 +29,10 @@ public class UserController {
   
   // API : 유저 정보 불러오기 메서드 //
   @GetMapping("/{email}")
-  public ResponseEntity<?> getUser(
-    @PathVariable("email") String email
+  public ResponseEntity<? super GetUserResponseDto> getUser(
+    @PathVariable(value="email", required=true) String email
   ) {
-    ResponseEntity<?> response = userService.getUser(email);
+    ResponseEntity<? super GetUserResponseDto> response = userService.getUser(email);
     return response;
   }
 

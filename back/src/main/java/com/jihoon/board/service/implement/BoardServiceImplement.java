@@ -142,12 +142,6 @@ public class BoardServiceImplement implements BoardService {
       SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, relationWord);
       searchLogRepository.save(searchLogEntity);
 
-      // description: 첫번째 검색이 아닐 경우 (relationWord가 null이 아님) //
-      if (relationWord != null) {
-        searchLogEntity = new SearchLogEntity(relationWord, searchWord);
-        searchLogRepository.save(searchLogEntity);
-      }
-
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();

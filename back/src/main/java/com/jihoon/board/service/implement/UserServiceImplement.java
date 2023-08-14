@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
 import com.jihoon.board.dto.response.ResponseDto;
+import com.jihoon.board.dto.response.user.GetUserResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
 import com.jihoon.board.entity.UserEntity;
@@ -21,9 +22,24 @@ public class UserServiceImplement implements UserService {
   private final UserRepository userRepository;
 
   @Override
-  public ResponseEntity<?> getUser(String email) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUser'");
+  public ResponseEntity<? super GetUserResponseDto> getUser(String email) {
+
+    UserEntity userEntity = null;
+
+    try {
+      // description: 이메일에 해당하는 유저 조회 //
+      userEntity = userRepository.findByEmail(email);
+
+      // description: 유저 데이터가 존재하는지 확인 //
+      if (userEntity == null) return GetUserResponseDto.noExistedUser();
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetUserResponseDto.success(userEntity);
+    
   }
 
   @Override
