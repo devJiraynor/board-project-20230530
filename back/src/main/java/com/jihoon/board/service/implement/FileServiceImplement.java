@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +32,7 @@ public class FileServiceImplement implements FileService {
     String uuid = UUID.randomUUID().toString();
     String saveFileName = uuid + extension;
     // description: 파일 저장 경로 지정 //
-    String savePath = file + saveFileName;
+    String savePath = filePath + saveFileName;
 
     // description: 파일 저장 //
     try {
@@ -49,8 +50,19 @@ public class FileServiceImplement implements FileService {
 
   @Override
   public Resource getFile(String fileName) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getFile'");
+    
+    Resource resource = null;
+
+    // description: 파일 저장 경로에서 파일명에 해당하는 파일 불러오기 //
+    try {
+      resource = new UrlResource("file:" + filePath + fileName);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return null;
+    }
+
+    return resource;
+
   }
   
 }
