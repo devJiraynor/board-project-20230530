@@ -217,9 +217,7 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto) {
-    
-    String writerEmail = dto.getWriterEmail();
+  public ResponseEntity<? super PostBoardResponseDto> postBoard(String writerEmail, PostBoardRequestDto dto) {
 
     try {
       // description: 작성자 이메일이 존재하는 이메일인지 확인 //
@@ -227,7 +225,7 @@ public class BoardServiceImplement implements BoardService {
       if (!hasUser) return PostBoardResponseDto.noExistedUser();
 
       // description: entity 생성 //
-      BoardEntity boardEntity = new BoardEntity(dto);
+      BoardEntity boardEntity = new BoardEntity(writerEmail, dto);
 
       // description: 데이터베이스에 저장 //
       boardRepository.save(boardEntity);
@@ -242,10 +240,8 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardNumber, PostCommentRequestDto dto) {
+  public ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardNumber, String userEmail, PostCommentRequestDto dto) {
     
-    String userEmail = dto.getUserEmail();
-
     try {
       // description: 존재하는 회원인지 확인 //
       boolean hasUser = userRepository.existsByEmail(userEmail);
@@ -256,7 +252,7 @@ public class BoardServiceImplement implements BoardService {
       if (boardEntity == null) return PostCommentResponseDto.noExistedBoard();
 
       // description: entity 생성 //
-      CommentEntity commentEntity = new CommentEntity(boardNumber, dto);
+      CommentEntity commentEntity = new CommentEntity(boardNumber, userEmail, dto);
 
       // description: 데이터베이스 저장 //
       commentRepository.save(commentEntity);
@@ -277,10 +273,8 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, PutFavoritRequestDto dto) {
-    
-    String userEmail = dto.getUserEmail();
-
+  public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String userEmail) {
+  
     try {
       // description: 존재하는 회원인지 확인 //
       boolean hasUser = userRepository.existsByEmail(userEmail);
@@ -320,10 +314,8 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, PatchBoardRequestDto dto) {
+  public ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, String userEmail, PatchBoardRequestDto dto) {
     
-    String userEmail = dto.getUserEmail();
-
     try {
       // description: 존재하는 유저인지 확인 //
       boolean hasUser = userRepository.existsByEmail(userEmail);
