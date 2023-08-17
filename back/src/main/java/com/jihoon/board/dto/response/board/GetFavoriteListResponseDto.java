@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import com.jihoon.board.common.response.ResponseCode;
 import com.jihoon.board.common.response.ResponseMessage;
 import com.jihoon.board.dto.response.ResponseDto;
-import com.jihoon.board.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
