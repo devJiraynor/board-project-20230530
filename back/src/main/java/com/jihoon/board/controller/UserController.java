@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jihoon.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.jihoon.board.dto.request.user.PatchUserProfileRequestDto;
+import com.jihoon.board.dto.response.user.GetSignInUserResponseDto;
 import com.jihoon.board.dto.response.user.GetUserResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.jihoon.board.dto.response.user.PatchUserProfileResponseDto;
@@ -39,8 +40,10 @@ public class UserController {
 
   // API : 로그인 유저 정보 불러오기 메서드 //
   @GetMapping("")
-  public ResponseEntity<?> getSignInUser() {
-    ResponseEntity<?> response = userService.getSignInUser();
+  public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
+    @AuthenticationPrincipal String email
+  ) {
+    ResponseEntity<? super GetSignInUserResponseDto> response = userService.getSignInUser(email);
     return response;
   }
 
