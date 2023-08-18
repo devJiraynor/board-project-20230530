@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { useDaumPostcodePopup, Address } from 'react-daum-postcode';
-import axios from 'axios';
 
 import { useUserStore } from 'src/stores';
 import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request/auth';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
-import { signInRequest, signUpRequest } from 'src/apis';
+import { getSignInUserRequest, signInRequest, signUpRequest } from 'src/apis';
 
 import './style.css';
+import { SignInResponseDto } from 'src/interfaces/response/auth';
+import ResponseDto from 'src/interfaces/response/response.dto';
+import { GetLoginUserResponseDto } from 'src/interfaces/response/user';
 
 //          component          //
 // description: 인증 화면 //
 export default function Authentication() {
 
   //          state          //
+  // description: Cookie 상태 //
+  const [cookies, setCookie] = useCookies();
+
   // description: 로그인 혹은 회원가입 뷰 상태 //
   const [view, setView] = useState<'sign-in' | 'sign-up'>('sign-in');
 
@@ -44,6 +50,30 @@ export default function Authentication() {
     const [password, setPassword] = useState<string>(signInMock.password);
 
     //          function          //
+    const signInResponseHandler = (result: SignInResponseDto | ResponseDto) => {
+      const { code } = result;
+      if (code === 'DM') setError(true);
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+
+      const { token, expiredTime } = result as SignInResponseDto;
+      getSignInUserRequest(token).then(getSignInUserResponseHandler);
+
+      const now = new Date().getTime();
+      const expires = new Date(now + expiredTime * 1000);
+
+      setCookie("accessToken", token, { expires });
+
+    }
+
+    const getSignInUserResponseHandler = (result: GetLoginUserResponseDto | ResponseDto) => {
+      const { code } = result;
+      if (code === 'NU') alert('토큰 정보가 잘못됐습니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+
+      
+    }
 
     //          event handler          //
     // description: 비밀번호 타입 변경 버튼 클릭 이벤트 //
@@ -57,25 +87,12 @@ export default function Authentication() {
     // description: 로그인 버튼 클릭 이벤트 //
     const onSignInButtonClickHandler = async () => {
 
-      if (email !== signInMock.email || password !== signInMock.password) {
-        setError(true);
-        return;
-      }
-
       const data: SignInRequestDto = {
         email,
         password
       }
       
-      signInRequest(data).then((result) => {
-        const { code } = result;
-        if (code === 'SU') {
-          
-        }
-        if (code === 'DM') setError(true);
-        if (code === 'DE') alert('데이터베이스 에러입니다.');
-      });
-
+      signInRequest(data).then(signInResponseHandler);
     }
 
     //          component          //
