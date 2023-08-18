@@ -4,7 +4,7 @@ import { useDaumPostcodePopup, Address } from 'react-daum-postcode';
 import axios from 'axios';
 
 import { useUserStore } from 'src/stores';
-import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
+import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request/auth';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
@@ -184,8 +184,15 @@ export default function Authentication() {
         addressDetail
       }
 
-      signUpRequest(data).then((response) => {
-        console.log(response);
+      signUpRequest(data).then((code) => {
+        // description: SU : 성공 //
+        if (code === 'SU') setView('sign-in');
+        // description: EE : 존재하는 이메일 //
+        if (code === 'EE') setEmailDuplicationError(true);
+        // todo: EN : 존재하는 닉네임 //
+        // todo: ET : 존재하는 전화번호 //
+        // description: DE : 데이터베이스 에러 //
+        if (code === 'DE') alert('데이터베이스 오류입니다.');
       })
     }
 
