@@ -1,9 +1,14 @@
-import { create } from "zustand";
-import { UserResponseDto } from "src/interfaces/response";
+import { create } from 'zustand';
+
+interface User {
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+}
 
 interface UserStore {
-  user: UserResponseDto | null;
-  setUser: (user: UserResponseDto | null) => void; 
+  user: User | null;
+  setUser: (user: User | null) => void; 
 }
 
 const useStore = create<UserStore>((set) => ({
