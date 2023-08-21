@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request/auth';
 import { PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
+import { PostBoardResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
@@ -198,19 +199,28 @@ export const getSignInUserRequest = async (token: string) => {
   return result;
 }
 
-export const postFileRequest = async () => {
-  const result = await axios.post(POST_FILE()).then((response) => {
-    return response;
+export const uploadFileRequest = async (data: FormData) => {
+  const result = await axios.post(POST_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' } })
+  .then((response) => {
+    const imageUrl: string = response.data;
+    return imageUrl;
   })
   .catch((error) => null);
   return result;
 }
 
-export const postBoardRequest = async (data: PostBoardRequestDto) => {
-  const result = await axios.post(POST_BOARD_URL(), data).then((response) => {
-    return response;
+export const postBoardRequest = async (data: PostBoardRequestDto, token: string) => {
+  const result = await axios.post(POST_BOARD_URL(), data, { headers: { Authorization: `Bearer ${token}` } })
+  .then((response) => {
+    const responseBody: PostBoardResponseDto = response.data;
+    const { code } = responseBody;
+    return code;
   })
-  .catch((error) => null);
+  .catch((error) => {
+    const responseBody: ResponseDto = error.response.data;
+    const { code } = responseBody;
+    return code;
+  });
   return result;
 }
 
