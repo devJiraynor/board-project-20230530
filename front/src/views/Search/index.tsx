@@ -6,9 +6,12 @@ import { usePagination } from 'src/hooks';
 import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
 import { relationWordListMock, searchBoardListMock } from 'src/mocks';
-import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
+import { COUNT_BY_PAGE, MAIN_PATH, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
+import { getRelationListRequest } from 'src/apis';
+import { GetRelationListResponseDto } from 'src/interfaces/response/search';
+import ResponseDto from 'src/interfaces/response/response.dto';
 
 //          component          //
 // description: 검색 화면 //
@@ -41,6 +44,16 @@ export default function Search() {
 
     setPageBoardList(pageBoardList);
   }
+  // description: 연관 검색어 리스트 불러오기 응답 처리 함수 //
+  const getRelationListResponseHandler = (responseBody: GetRelationListResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+    if (code === 'VF') alert('입력이 올바르지 않습니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') return;
+
+    const { relationList } = responseBody as GetRelationListResponseDto;
+    setRelationList(relationList);
+  }
 
   //          event handler          //
   // description: 연관 검색어 클릭 이벤트 //
@@ -53,9 +66,15 @@ export default function Search() {
   //          effect          //
   // description: 검색어 상태가 바뀔때 마다 해당 검색어의 검색 결과 불러오기 //
   useEffect(() => {
+    if (!searchWord) {
+      alert('검색어가 올바르지 않습니다.');
+      navigator(MAIN_PATH);
+      return;
+    }
     setSearchList(searchBoardListMock);
     setBoardCount((searchWord as string).length);
-    setRelationList(relationWordListMock);
+
+    getRelationListRequest(searchWord).then(getRelationListResponseHandler);
 
     getPageBoardList();
 
