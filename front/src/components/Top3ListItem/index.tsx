@@ -5,6 +5,7 @@ import { BOARD_DETAIL_PATH } from 'src/constants';
 import { BoardListResponseDto } from 'src/interfaces/response/board';
 
 import defaultProfileImage from 'src/assets/default-profile-image.png';
+import { dateFormat } from 'src/utils';
 
 interface Props {
   item: BoardListResponseDto;
@@ -53,7 +54,7 @@ export default function Top3ListItem({ item }: Props) {
               { writerNickname }
             </div>
             <div className='top3-list-item-write-date'>
-              { writeDatetime }
+              { dateFormat(writeDatetime) }
             </div>
           </div>
         </div>

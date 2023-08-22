@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { SearchListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
 import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
-import { relationWordListMock, searchBoardListMock } from 'src/mocks';
 import { COUNT_BY_PAGE, MAIN_PATH, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
 import { getRelationListRequest } from 'src/apis';
 import { GetRelationListResponseDto } from 'src/interfaces/response/search';
 import ResponseDto from 'src/interfaces/response/response.dto';
+import { BoardListResponseDto } from 'src/interfaces/response/board';
 
 //          component          //
 // description: 검색 화면 //
@@ -25,9 +24,9 @@ export default function Search() {
   // description: 게시물 수를 저장하는 상태 //
   const [boardCount, setBoardCount] = useState<number>(0);
   // description: 전체 게시물 리스트 상태 //
-  const [searchList, setSearchList] = useState<SearchListResponseDto[]>([]);
+  const [searchList, setSearchList] = useState<BoardListResponseDto[]>([]);
   // description: 현재 페이지에서 보여줄 게시물 리스트 상태 //
-  const [pageBoardList, setPageBoardList] = useState<SearchListResponseDto[]>([]);
+  const [pageBoardList, setPageBoardList] = useState<BoardListResponseDto[]>([]);
   // description: 연관 검색어 리스트 상태 //
   const [relationList, setRelationList] = useState<string[]>([]);
 
@@ -37,10 +36,10 @@ export default function Search() {
   // description: 현재 페이지의 게시물 리스트 분류 함수 //
   const getPageBoardList = () => {
     const lastIndex = 
-      searchBoardListMock.length > COUNT_BY_PAGE * currentPage ? 
-      COUNT_BY_PAGE * currentPage : searchBoardListMock.length;
+      searchList.length > COUNT_BY_PAGE * currentPage ? 
+      COUNT_BY_PAGE * currentPage : searchList.length;
     const startIndex = COUNT_BY_PAGE * (currentPage - 1);
-    const pageBoardList = searchBoardListMock.slice(startIndex, lastIndex);
+    const pageBoardList = searchList.slice(startIndex, lastIndex);
 
     setPageBoardList(pageBoardList);
   }
@@ -71,19 +70,19 @@ export default function Search() {
       navigator(MAIN_PATH);
       return;
     }
-    setSearchList(searchBoardListMock);
+    // setSearchList(searchBoardListMock);
     setBoardCount((searchWord as string).length);
 
     getRelationListRequest(searchWord).then(getRelationListResponseHandler);
 
     getPageBoardList();
 
-    changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
+    // changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
   }, [searchWord]);
 
   // description: 현재 색션이 바뀔때 마다 페이지 리스트 변경 //
   useEffect(() => {
-    changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
+    // changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
   }, [currentSection]);
 
   // description: 현재 페이지가 바뀔때 마다 검색 게시물 분류하기 //

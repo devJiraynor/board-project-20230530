@@ -2,18 +2,17 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
 import Top3ListItem from 'src/components/Top3ListItem';
 import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
-import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
 import { getPopularListRequest } from 'src/apis';
 import { GetPopularListResponseDto } from 'src/interfaces/response/search';
 import ResponseDto from 'src/interfaces/response/response.dto';
+import { BoardListResponseDto } from 'src/interfaces/response/board';
 
 //          component          //
 // description: 메인 화면 //
@@ -33,7 +32,7 @@ export default function Main() {
     
     //          state          //
     // description: 인기 게시물 리스트 상태 //
-    const [top3List, setTop3List] = useState<Top3ListResponseDto[]>([]);
+    const [top3List, setTop3List] = useState<BoardListResponseDto[]>([]);
     
     //          function          //
 
@@ -70,7 +69,7 @@ export default function Main() {
     // description: 페이지네이션 관련 상태 및 함수 //
     const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
     // description: 최신 게시물 리스트 상태 //
-    const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
+    const [currentList, setCurrentList] = useState<BoardListResponseDto[]>([]);
     // description: 인기 검색어 리스트 상태 //
     const [popularList, setPopularList] = useState<string[]>([]);
 
@@ -108,7 +107,7 @@ export default function Main() {
         })
         .catch((error) => {
           changeSection(72, COUNT_BY_PAGE);
-          setCurrentList(currentBoardListMock);
+          setCurrentList([]);
         });
         
     }, [currentSection]);

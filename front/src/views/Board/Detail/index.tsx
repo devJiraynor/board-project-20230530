@@ -15,6 +15,7 @@ import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favor
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
 import { useCookies } from 'react-cookie';
 import { PostCommentRequestDto } from 'src/interfaces/request/board';
+import { dateFormat } from 'src/utils';
 
 //          component          //
 // description: 게시물 상세 화면 //
@@ -199,7 +200,7 @@ export default function BoardDetail() {
               <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage})` }}></div>
               <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{board?.writerNickname}</div>
               <div className='board-detail-write-date'>{'\|'}</div>
-              <div className='board-detail-write-date'>{board?.writeDatetime}</div>
+              <div className='board-detail-write-date'>{ dateFormat(board?.writeDatetime as string) }</div>
             </div>
             <div className='board-detail-meta-right'>
               {openMore && (
