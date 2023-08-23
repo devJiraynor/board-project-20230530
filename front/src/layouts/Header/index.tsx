@@ -22,7 +22,7 @@ export default function Header() {
   // description: 로그인 유저 정보 상태 //
   const { user, setUser } = useUserStore();
   // description: 게시물 작성 데이터 상태 //
-  const { boardNumber, boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
+  const { boardNumber, boardTitle, boardContent, boardImage, boardImageUrl, resetBoard } = useBoardWriteStore();
   // description: Cookie 상태 //
   const [cookies, setCookie] = useCookies();
 
@@ -125,20 +125,28 @@ export default function Header() {
   // description: 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = async () => {
 
-    const imageUrl = await fileUpload();
-
-    const data: PostBoardRequestDto | PatchBoardRequestDto = {
-      title: boardTitle,
-      contents: boardContent,
-      imageUrl
-    }
     const token = cookies.accessToken;
 
-    if (pathname === BOARD_WRITE_PATH()) 
+    if (pathname === BOARD_WRITE_PATH()) {
+      const imageUrl = await fileUpload();
+
+      const data: PostBoardRequestDto = {
+        title: boardTitle,
+        contents: boardContent,
+        imageUrl
+      }
       postBoardRequest(data, token).then(postBoardResponseHandler);
+    } 
     else {
-      console.log(boardNumber);
       if (!boardNumber) return;
+
+      const imageUrl = boardImage ? await fileUpload() : boardImageUrl;
+
+      const data: PatchBoardRequestDto = {
+        title: boardTitle,
+        contents: boardContent,
+        imageUrl
+      }
       patchBoardRequest(boardNumber, data, token).then(patchBoardResponseHandler);
     }
     

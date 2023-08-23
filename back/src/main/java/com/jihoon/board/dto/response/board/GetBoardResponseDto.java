@@ -21,7 +21,7 @@ public class GetBoardResponseDto extends ResponseDto {
   private String writeDatetime;
   private String writerEmail;
   private String writerNickname;
-  private String wirterProfileImage;
+  private String writerProfileImage;
 
   private GetBoardResponseDto(String code, String message, BoardViewEntity boardViewEntity) {
     super(code, message);
@@ -32,7 +32,7 @@ public class GetBoardResponseDto extends ResponseDto {
     this.writeDatetime = boardViewEntity.getWriteDatetime();
     this.writerEmail = boardViewEntity.getWriterEmail();
     this.writerNickname = boardViewEntity.getWriterNickname();
-    this.wirterProfileImage = boardViewEntity.getWriterProfileImage();
+    this.writerProfileImage = boardViewEntity.getWriterProfileImage();
   }
 
   public static ResponseEntity<GetBoardResponseDto> success(BoardViewEntity boardViewEntity) {

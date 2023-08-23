@@ -17,6 +17,8 @@ import { useCookies } from 'react-cookie';
 import { PostCommentRequestDto } from 'src/interfaces/request/board';
 import { dateFormat } from 'src/utils';
 
+import defaultProfileImage from 'src/assets/default-profile-image.png';
+
 //          component          //
 // description: 게시물 상세 화면 //
 export default function BoardDetail() {
@@ -197,7 +199,7 @@ export default function BoardDetail() {
           </div>
           <div className='board-detail-meta-container'>
             <div className='board-detail-meta-left'>
-              <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage})` }}></div>
+              <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage ? board.writerProfileImage : defaultProfileImage})` }}></div>
               <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{board?.writerNickname}</div>
               <div className='board-detail-write-date'>{'\|'}</div>
               <div className='board-detail-write-date'>{ dateFormat(board?.writeDatetime as string) }</div>
