@@ -9,10 +9,10 @@ import Pagination from 'src/components/Pagination';
 import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
-import { getPopularListRequest } from 'src/apis';
+import { getCurrentBoardListRequest, getPopularListRequest, getTop3BoardListRequest } from 'src/apis';
 import { GetPopularListResponseDto } from 'src/interfaces/response/search';
 import ResponseDto from 'src/interfaces/response/response.dto';
-import { BoardListResponseDto } from 'src/interfaces/response/board';
+import { BoardListResponseDto, GetCurrentResponseDto, GetTop3ResponseDto } from 'src/interfaces/response/board';
 
 //          component          //
 // description: 메인 화면 //
@@ -35,14 +35,22 @@ export default function Main() {
     const [top3List, setTop3List] = useState<BoardListResponseDto[]>([]);
     
     //          function          //
+    // description: Top3 게시물 리스트 불러오기 응답 처리 함수 //
+    const getTop3BoardListResponseHandler = (responseBody: GetTop3ResponseDto | ResponseDto) => {
+      const { code } = responseBody;
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
 
+      const { top3 } = responseBody as GetTop3ResponseDto;
+      setTop3List(top3);
+    }
     //          event handler          //
-    
     //          component          //
-
     //          effect          //
     // description: 첫 시작 시 인기 게시물 데이터 불러오기 //
-    useEffect(() => {}, []);
+    useEffect(() => {
+      getTop3BoardListRequest().then(getTop3BoardListResponseHandler);
+    }, []);
 
     //          render          //
     return (
@@ -83,6 +91,16 @@ export default function Main() {
       const { popularList } = responseBody as GetPopularListResponseDto;
       setPopularList(popularList);
     }
+    // description: 최신 게시물 리스트 불러오기 응답 처리 함수 //
+    const getCurrentBoardListResponseHandler = (responseBody: GetCurrentResponseDto | ResponseDto) => {
+      const { code } = responseBody;
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+
+      const { boardList } = responseBody as GetCurrentResponseDto;
+      changeSection(boardList.length, COUNT_BY_PAGE);
+      setCurrentList(boardList);
+    }
 
     //          event handler          //
     // description: 인기 검색어 클릭 이벤트 //
@@ -99,17 +117,7 @@ export default function Main() {
     }, []);
     // description: 현재 섹션이 바뀔 때마다 페이지 리스트 변경 및 최신 게시물 불러오기 //
     useEffect(() => {
-
-      axios.get('url')
-        .then((response) => {
-          changeSection(response.data.length, COUNT_BY_PAGE);
-          setCurrentList(response.data);
-        })
-        .catch((error) => {
-          changeSection(72, COUNT_BY_PAGE);
-          setCurrentList([]);
-        });
-        
+      getCurrentBoardListRequest(currentSection).then(getCurrentBoardListResponseHandler);
     }, [currentSection]);
 
     //          render          //

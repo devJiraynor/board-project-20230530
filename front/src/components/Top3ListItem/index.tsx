@@ -20,6 +20,10 @@ export default function Top3ListItem({ item }: Props) {
   const { boardNumber, title, contents, imageUrl } = item;
   const { writerProfileImage, writerNickname, writeDatetime } = item;
   const { favoriteCount, commentCount, viewCount } = item;
+
+  const background = imageUrl ? 
+    { backgroundImage: `url(${imageUrl})` } :
+    { backgroundColor: 'rgba(0, 0, 0, 0.7)' };
   
   //          function          //
   // description: 페이지 이동을 위한 네비게이트 함수 //
@@ -39,7 +43,7 @@ export default function Top3ListItem({ item }: Props) {
   return (
     <div 
       className='top3-list-item-box' 
-      style={{ backgroundImage: `url(${imageUrl})` }}
+      style={background}
       onClick={onClickHandler}
     >
       <div className='top3-list-item-container'>
