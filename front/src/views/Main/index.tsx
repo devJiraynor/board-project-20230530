@@ -94,6 +94,7 @@ export default function Main() {
     // description: 최신 게시물 리스트 불러오기 응답 처리 함수 //
     const getCurrentBoardListResponseHandler = (responseBody: GetCurrentResponseDto | ResponseDto) => {
       const { code } = responseBody;
+      if (code === 'VF') alert('섹션이 잘못되었습니다.');
       if (code === 'DE') alert('데이터베이스 에러입니다.');
       if (code !== 'SU') return;
 
